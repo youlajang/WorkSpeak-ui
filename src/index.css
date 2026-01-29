@@ -322,4 +322,77 @@ body {
   height: 6px;
 }
 
-.ws-progress-fi
+.ws-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4f46e5, #0ea5e9);
+}
+
+.ws-progress-fill-gold {
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+}
+
+/* Better responsive */
+@media (max-width: 960px) {
+  .ws-topnav {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .ws-topnav-left {
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .ws-nav-links {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding-bottom: 4px;
+  }
+
+  .ws-nav-link {
+    white-space: nowrap;
+  }
+
+  .ws-topnav-right {
+    gap: 8px;
+  }
+
+  .ws-level-badge {
+    display: none;
+  }
+
+  .ws-main {
+    padding: 0 16px;
+    margin: 16px auto 28px;
+  }
+
+  .ws-card,
+  .ws-card-main {
+    padding: 16px;
+  }
+
+  .ws-card-actions {
+    flex-direction: column;
+  }
+
+  .ws-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .ws-logo {
+    font-size: 16px;
+  }
+
+  .ws-card-title {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .ws-pill-group {
+    gap: 4px;
+  }
+}
