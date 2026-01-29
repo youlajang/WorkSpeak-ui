@@ -1,0 +1,325 @@
+/* src/index.css */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background: #f3f5fb;
+  color: #192132;
+}
+
+.ws-app {
+  min-height: 100vh;
+}
+
+/* Top nav */
+
+.ws-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 40px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+}
+
+.ws-topnav-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.ws-logo {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: #111827;
+}
+
+.ws-nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.ws-nav-link {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.ws-nav-link-active {
+  background: #111827;
+  color: #ffffff;
+}
+
+.ws-topnav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ws-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.ws-level-badge {
+  background: #e5f0ff;
+  color: #1d4ed8;
+}
+
+.ws-points {
+  font-size: 13px;
+  color: #374151;
+}
+
+.ws-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1, #0ea5e9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Layout */
+
+.ws-main {
+  max-width: 1200px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+  display: flex;
+  gap: 24px;
+}
+
+.ws-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ws-column-left {
+  flex: 2;
+}
+
+.ws-column-right {
+  flex: 1.2;
+}
+
+/* Cards */
+
+.ws-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 20px 20px;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.04);
+}
+
+.ws-card-main {
+  padding: 22px 24px 24px;
+}
+
+.ws-card-small {
+  padding: 16px 18px 18px;
+}
+
+.ws-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ws-card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ws-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 4px 0;
+  color: #111827;
+}
+
+.ws-card-title-sm {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #111827;
+}
+
+.ws-eyebrow {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.ws-subtext {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 4px 0 0;
+}
+
+/* Pills / tags */
+
+.ws-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ws-pill {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.ws-pill-stage {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.ws-pill-time {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+.ws-pill-journey {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.ws-pill-review {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.ws-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.ws-tag {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+/* Buttons */
+
+.ws-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ws-btn-primary {
+  background: #111827;
+  color: #ffffff;
+}
+
+.ws-btn-secondary {
+  background: #111827;
+  color: #ffffff;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.ws-btn-ghost {
+  background: transparent;
+  color: #111827;
+}
+
+.ws-btn-outline {
+  background: transparent;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.ws-btn-xs {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.ws-link-btn {
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+/* Card actions */
+
+.ws-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* Progress */
+
+.ws-progress-row {
+  margin-top: 12px;
+}
+
+.ws-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.ws-progress-percent {
+  font-weight: 500;
+  color: #111827;
+}
+
+.ws-progress-bar {
+  margin-top: 6px;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.ws-progress-bar-small {
+  height: 6px;
+}
+
+.ws-progress-fi
