@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type RangeKey = "7d" | "30d";
@@ -122,7 +122,7 @@ function ChartWithLabels({
   rightLabel,
   compact = false,
 }: {
-  data: number[];
+  data: readonly number[] | number[];
   leftLabel: string;
   midLabel: string;
   rightLabel: string;
@@ -134,7 +134,7 @@ function ChartWithLabels({
   return (
     <div className="ws-chartBox" style={compact ? { marginTop: 8 } : undefined}>
       <div className="ws-chartInner" style={compact ? { height: 32 } : undefined}>
-        <Sparkline data={data} width={w} height={h} strokeWidth={2} />
+        <Sparkline data={[...data]} width={w} height={h} strokeWidth={2} />
       </div>
       <div className="ws-chartLabels" style={compact ? { fontSize: 11, opacity: 0.7, marginTop: 6 } : undefined}>
         <span>{leftLabel}</span>
@@ -587,7 +587,7 @@ export default function StatsView() {
 
               <div className="ws-heroChartRow">
                 <ChartWithLabels
-                  data={speakingScore.trend}
+                  data={[...speakingScore.trend]}
                   leftLabel={labels.left}
                   midLabel={labels.mid}
                   rightLabel={labels.right}
@@ -710,7 +710,7 @@ export default function StatsView() {
                     </div>
 
                     <ChartWithLabels
-                      data={m.trend}
+                      data={[...m.trend]}
                       leftLabel={labels.left}
                       midLabel={labels.mid}
                       rightLabel={labels.right}

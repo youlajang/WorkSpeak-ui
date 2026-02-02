@@ -1,5 +1,5 @@
 // src/views/ReportDetailView.tsx
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 type ReportKind = "quest" | "level_test";

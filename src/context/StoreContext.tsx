@@ -77,11 +77,6 @@ const StoreContext = createContext<StoreContextValue | null>(null);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<StoredState>(loadState);
 
-  const persist = useCallback((next: StoredState) => {
-    setState(next);
-    saveState(next);
-  }, []);
-
   const addPoints = useCallback((amount: number) => {
     setState((prev) => {
       const next = { ...prev, points: Math.max(0, prev.points + amount) };

@@ -1,6 +1,4 @@
 // src/views/PracticeView.tsx
-import React from "react";
-
 export default function PracticeView() {
   return (
     <section className="ws-practicePage">

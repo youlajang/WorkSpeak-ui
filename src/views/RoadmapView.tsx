@@ -1,5 +1,5 @@
 // src/views/RoadmapView.tsx
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 type Status = "done" | "current" | "locked";
 

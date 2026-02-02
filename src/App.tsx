@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./index.css";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
