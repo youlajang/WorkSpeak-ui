@@ -1,5 +1,57 @@
 /* src/index.css */
 
+/* =============================
+   0) Theme tokens (Light/Dark)
+============================= */
+:root {
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --panel-2: rgba(255, 255, 255, 0.7);
+  --text: #0f172a;
+  --muted: #64748b;
+  --line: rgba(15, 23, 42, 0.12);
+
+  --shadow: 0 18px 44px rgba(15, 23, 42, 0.10);
+  --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.08);
+
+  --radius: 18px;
+
+  --primary: #2563eb;
+  --primary-contrast: #ffffff;
+
+  --pill: rgba(15, 23, 42, 0.06);
+  --warn: #f59e0b;
+
+  --hero-a: #2563eb;
+  --hero-b: #22c55e;
+  --hero-c: #a855f7;
+}
+
+html[data-theme="dark"] {
+  --bg: #0b1220;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-2: rgba(255, 255, 255, 0.04);
+  --text: #e5e7eb;
+  --muted: rgba(229, 231, 235, 0.66);
+  --line: rgba(255, 255, 255, 0.12);
+
+  --shadow: 0 18px 44px rgba(0, 0, 0, 0.36);
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.30);
+
+  --primary: #60a5fa;
+  --primary-contrast: #0b1220;
+
+  --pill: rgba(255, 255, 255, 0.10);
+  --warn: #fbbf24;
+
+  --hero-a: #60a5fa;
+  --hero-b: #34d399;
+  --hero-c: #c084fc;
+}
+
+/* =============================
+   1) Base reset
+============================= */
 *,
 *::before,
 *::after {
@@ -10,389 +62,3853 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
-  background: #f3f5fb;
-  color: #192132;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.ws-app {
+/* =============================
+   2) Shell layout
+============================= */
+.ws-shell {
   min-height: 100vh;
+  display: grid;
+  grid-template-columns: 92px 1fr;
 }
 
-/* Top nav */
+.ws-main {
+  padding: 18px 22px 26px;
+}
 
-.ws-topnav {
+/* =============================
+   3) Left rail
+============================= */
+.ws-rail {
   position: sticky;
   top: 0;
-  z-index: 10;
+  height: 100vh;
+  padding: 14px 12px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 40px;
-  background: #ffffff;
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
-}
-
-.ws-topnav-left {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.ws-logo {
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: 0.02em;
-  color: #111827;
-}
-
-.ws-nav-links {
-  display: flex;
-  gap: 8px;
-}
-
-.ws-nav-link {
-  border: none;
-  background: transparent;
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-size: 14px;
-  color: #6b7280;
-  cursor: pointer;
-}
-
-.ws-nav-link-active {
-  background: #111827;
-  color: #ffffff;
-}
-
-.ws-topnav-right {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
+  border-right: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 75%, transparent);
+  backdrop-filter: blur(12px);
 }
 
-.ws-badge {
-  font-size: 12px;
-  padding: 4px 10px;
+.ws-brand {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 10px;
+}
+
+.ws-logoMark {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-railNav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.ws-railItem {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  border-radius: 16px;
+  padding: 10px 8px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  gap: 6px;
+}
+
+.ws-railItem:hover {
+  background: var(--pill);
+}
+
+.ws-railItem.is-active {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-railIcon {
+  font-size: 18px;
+}
+
+.ws-railLabel {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ws-railFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ws-themeBtn {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ✅ profile button (avatar only) */
+.ws-profileBtn {
+  border: 1px solid var(--line);
+  background: var(--panel);
   border-radius: 999px;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  place-items: center;
 }
 
-.ws-level-badge {
-  background: #e5f0ff;
-  color: #1d4ed8;
-}
-
-.ws-points {
-  font-size: 13px;
-  color: #374151;
+.ws-profileBtn:hover {
+  background: var(--pill);
 }
 
 .ws-avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #6366f1, #0ea5e9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
+  font-weight: 800;
 }
 
-/* Layout */
-
-.ws-main {
-  max-width: 1200px;
-  margin: 24px auto 40px;
-  padding: 0 24px;
-  display: flex;
-  gap: 24px;
-}
-
-.ws-column {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.ws-column-left {
-  flex: 2;
-}
-
-.ws-column-right {
-  flex: 1.2;
-}
-
-/* Cards */
-
-.ws-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 18px 20px 20px;
-  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.04);
-}
-
-.ws-card-main {
-  padding: 22px 24px 24px;
-}
-
-.ws-card-small {
-  padding: 16px 18px 18px;
-}
-
-.ws-card-header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.ws-card-header-row {
+/* =============================
+   4) Top bar
+============================= */
+.ws-topbar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 8px 6px 16px;
 }
 
-.ws-card-title {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 4px 0;
-  color: #111827;
-}
-
-.ws-card-title-sm {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 4px;
-  color: #111827;
-}
-
-.ws-eyebrow {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #9ca3af;
+.ws-title {
   margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.02em;
 }
 
-.ws-subtext {
+.ws-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.ws-chip {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+
+  /* ✅ long topic safe */
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ws-dot {
+  color: var(--muted);
+}
+
+.ws-muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* KPIs */
+.ws-kpis {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ws-kpi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-kpiIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  font-size: 16px;
+}
+
+.ws-kpiText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ws-kpiLabel {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.ws-kpiValue {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* =============================
+   5) Grid layout
+============================= */
+.ws-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+  align-items: start;
+}
+
+.ws-center,
+.ws-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* =============================
+   6) Generic card styles
+============================= */
+.ws-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 16px;
+  box-shadow: var(--shadow);
+}
+
+.ws-cardTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.ws-cardTitle {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  font-size: 15px;
+}
+
+.ws-sub {
   font-size: 13px;
-  color: #6b7280;
-  margin: 4px 0 0;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.45;
 }
 
-/* Pills / tags */
-
-.ws-pill-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.ws-link {
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 800;
 }
 
+/* Pills */
 .ws-pill {
-  font-size: 11px;
-  padding: 4px 8px;
+  font-size: 12px;
+  padding: 4px 10px;
   border-radius: 999px;
-  background: #f3f4f6;
-  color: #4b5563;
+  background: var(--pill);
+  border: 1px solid var(--line);
 }
 
-.ws-pill-stage {
-  background: #eef2ff;
-  color: #4338ca;
-}
-
-.ws-pill-time {
-  background: #ecfdf5;
-  color: #15803d;
-}
-
-.ws-pill-journey {
-  background: #e0f2fe;
-  color: #0369a1;
-}
-
-.ws-pill-review {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.ws-tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
-}
-
-.ws-tag {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  color: #6b7280;
-}
-
-/* Buttons */
-
+/* =============================
+   7) Buttons
+============================= */
 .ws-btn {
   border-radius: 999px;
-  border: none;
-  padding: 8px 16px;
+  border: 1px solid transparent;
+  padding: 10px 14px;
   font-size: 14px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 900;
+}
+
+.ws-btn-sm {
+  padding: 8px 12px;
+  font-size: 13px;
 }
 
 .ws-btn-primary {
-  background: #111827;
-  color: #ffffff;
-}
-
-.ws-btn-secondary {
-  background: #111827;
-  color: #ffffff;
-  width: 100%;
-  margin-top: 8px;
-}
-
-.ws-btn-ghost {
-  background: transparent;
-  color: #111827;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
 .ws-btn-outline {
   background: transparent;
-  color: #111827;
-  border: 1px solid #d1d5db;
+  color: var(--text);
+  border-color: var(--line);
 }
 
-.ws-btn-xs {
-  padding: 6px 10px;
-  font-size: 12px;
+.ws-btn-disabled {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--line);
+  cursor: not-allowed;
 }
 
-.ws-link-btn {
-  margin-top: 8px;
-  padding: 0;
-  border: none;
-  background: none;
-  font-size: 13px;
-  color: #2563eb;
-  cursor: pointer;
+/* =============================
+   8) HERO
+============================= */
+.ws-hero {
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--line));
+  padding: 18px;
+  box-shadow: var(--shadow);
+  background:
+    radial-gradient(1200px 420px at 20% 10%, color-mix(in srgb, var(--hero-a) 35%, transparent), transparent 60%),
+    radial-gradient(900px 400px at 90% 20%, color-mix(in srgb, var(--hero-c) 30%, transparent), transparent 62%),
+    radial-gradient(800px 380px at 60% 100%, color-mix(in srgb, var(--hero-b) 25%, transparent), transparent 65%),
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 70%, transparent), var(--panel));
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 14px;
 }
 
-/* Card actions */
+.ws-heroContent {
+  padding: 6px 6px 8px;
+}
 
-.ws-card-actions {
+.ws-heroEyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  font-weight: 900;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+}
+
+.ws-heroTitleRow {
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin-top: 18px;
 }
 
-/* Progress */
+.ws-heroTitle {
+  margin: 10px 0 8px;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
 
-.ws-progress-row {
+.ws-heroH3 {
+  margin: 6px 0 8px;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.ws-heroDesc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+}
+
+.ws-heroMeta {
   margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.ws-progress-labels {
+.ws-metaPill {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: color-mix(in srgb, var(--text) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-heroCtaRow {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ws-btn-hero {
+  padding: 12px 18px;
+  font-size: 15px;
+}
+
+.ws-stepHint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--text) 70%, transparent);
+}
+
+/* Badge animation */
+.ws-upNextBadge {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: color-mix(in srgb, var(--text) 92%, transparent);
+  transform-origin: left center;
+  animation: wsUpNextPop 1000ms ease forwards;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-upNextBadge.isUpNext {
+  background: color-mix(in srgb, var(--hero-c) 14%, var(--panel-2));
+  border-color: color-mix(in srgb, var(--hero-c) 28%, var(--line));
+}
+
+.ws-upNextBadge.isReady {
+  background: color-mix(in srgb, var(--hero-b) 12%, var(--panel-2));
+  border-color: color-mix(in srgb, var(--hero-b) 24%, var(--line));
+}
+
+@keyframes wsUpNextPop {
+  0% { opacity: 0; transform: translateY(-6px) scale(0.96); filter: blur(1px); }
+  12% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  80% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-2px) scale(0.98); }
+}
+
+/* Hero side card */
+.ws-heroSide {
+  display: flex;
+  align-items: stretch;
+}
+
+.ws-heroSideCard {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+  box-shadow: var(--shadow-soft);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ws-heroSideTitle {
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.ws-heroSideSub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.ws-miniStat {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 10px 10px;
+}
+
+.ws-miniLabel {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--muted);
+  font-weight: 900;
 }
 
-.ws-progress-percent {
-  font-weight: 500;
-  color: #111827;
+.ws-miniValue {
+  font-size: 12px;
+  font-weight: 900;
 }
 
-.ws-progress-bar {
-  margin-top: 6px;
-  width: 100%;
-  height: 8px;
+/* =============================
+   9) Path header
+============================= */
+.ws-pathHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* =============================
+   10) Path Map (scroll)
+============================= */
+.ws-mapScroller {
+  position: relative;
+  margin-top: 12px;
+  padding: 10px 6px 4px;
+  max-height: 560px;
+  overflow: auto;
+  border-radius: 18px;
+}
+
+.ws-mapScroller-modal {
+  max-height: 70vh;
+}
+
+.ws-mapLine {
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 6px;
   border-radius: 999px;
-  background: #e5e7eb;
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--line));
+}
+
+.ws-mapRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin: 14px 0;
+}
+
+.ws-mapDot {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-weight: 900;
+  margin-left: 6px;
+}
+
+.ws-mapDot:disabled {
+  cursor: not-allowed;
+}
+
+.ws-mapDot.next {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+}
+
+.ws-mapDot.done {
+  background: color-mix(in srgb, var(--hero-b) 14%, var(--panel));
+  border-color: color-mix(in srgb, var(--hero-b) 28%, var(--line));
+}
+
+.ws-mapDot.locked {
+  opacity: 0.55;
+}
+
+.ws-mapCard {
+  width: min(620px, 100%);
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 86%, transparent);
+  box-shadow: var(--shadow-soft);
+  padding: 12px 12px;
+}
+
+.ws-mapCard.next {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+}
+
+.ws-mapCard.locked { opacity: 0.82; }
+.ws-mapCard.done { opacity: 0.96; }
+
+.ws-mapCardTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.ws-mapTitle {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.ws-mapNo {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 900;
+  margin-left: 6px;
+}
+
+.ws-mapSub {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.ws-mapDetailBtn {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-mapDetailBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Accordion */
+.ws-accordion {
+  max-height: 0;
+  opacity: 0;
   overflow: hidden;
+  transition: max-height 260ms ease, opacity 200ms ease;
+  margin-top: 0;
 }
 
-.ws-progress-bar-small {
-  height: 6px;
+.ws-accordion.open {
+  max-height: 420px;
+  opacity: 1;
+  margin-top: 10px;
 }
 
-.ws-progress-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #4f46e5, #0ea5e9);
+.ws-accItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  margin-top: 8px;
 }
 
-.ws-progress-fill-gold {
-  background: linear-gradient(90deg, #fbbf24, #f97316);
+.ws-accLeft {
+  min-width: 0;
 }
 
-/* Better responsive */
-@media (max-width: 960px) {
-  .ws-topnav {
-    padding: 12px 16px;
-    gap: 12px;
+.ws-accLabel {
+  font-weight: 900;
+}
+
+.ws-accMeta {
+  margin-top: 4px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+/* =============================
+   11) Leaderboard / Rank-only
+============================= */
+.ws-leaderList {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ws-leaderRow {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+}
+
+.ws-leaderRow.is-me {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.ws-rank {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.ws-leaderName {
+  font-weight: 900;
+}
+
+.ws-leaderPts {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.ws-rankOnly {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  box-shadow: var(--shadow-soft);
+  margin-top: 10px;
+}
+
+.ws-rankBig {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.ws-mutedSmall {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.ws-levelReason {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+
+.ws-levelTag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  font-weight: 900;
+}
+
+/* =============================
+   12) Modal
+============================= */
+.ws-modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 50;
+}
+
+.ws-modal {
+  width: min(980px, 96vw);
+  max-height: 90vh;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.ws-modalHeader {
+  padding: 14px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ws-modalBody {
+  padding: 10px 10px 14px;
+}
+
+/* =============================
+   13) Responsive
+============================= */
+@media (max-width: 1100px) {
+  .ws-grid {
+    grid-template-columns: 1fr;
   }
 
-  .ws-topnav-left {
-    gap: 12px;
-    min-width: 0;
+  .ws-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ws-shell {
+    grid-template-columns: 1fr;
   }
 
-  .ws-nav-links {
+  .ws-rail {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ws-railNav {
+    flex-direction: row;
+    gap: 6px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    gap: 6px;
-    padding-bottom: 4px;
   }
 
-  .ws-nav-link {
-    white-space: nowrap;
+  .ws-railItem {
+    min-width: 74px;
   }
 
-  .ws-topnav-right {
-    gap: 8px;
+  .ws-topbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .ws-level-badge {
-    display: none;
+  .ws-topbarRight {
+    width: 100%;
   }
 
   .ws-main {
-    padding: 0 16px;
-    margin: 16px auto 28px;
+    padding: 14px 14px 20px;
   }
 
-  .ws-card,
-  .ws-card-main {
-    padding: 16px;
+  .ws-mapLine {
+    left: 24px;
   }
+}
 
-  .ws-card-actions {
+@media (max-width: 360px) {
+  .ws-railNav { gap: 4px; }
+  .ws-railItem { min-width: 64px; font-size: 12px; }
+  .ws-topbar { padding-left: 8px; padding-right: 8px; }
+  .ws-main { padding: 10px 8px 16px; }
+}
+
+@media (max-width: 320px) {
+  .ws-railItem { min-width: 56px; font-size: 11px; }
+  .ws-topbar { padding-left: 6px; padding-right: 6px; }
+  .ws-main { padding: 8px 6px 14px; }
+}
+
+/* =============================
+   Roadmap (Stage 1~8)
+============================= */
+.ws-roadmap{
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.ws-roadHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:14px;
+  padding: 8px 6px 12px;
+  min-width: 0;
+}
+
+.ws-roadHeaderActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  flex-shrink: 0;
+}
+
+.ws-roadProgress{
+  margin-top: 6px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ws-roadProgressTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom: 10px;
+}
+
+.ws-roadBar{
+  height: 12px;
+  border-radius: 999px;
+  overflow:hidden;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+}
+
+.ws-roadFill{
+  height:100%;
+  background: var(--primary);
+  width: 0%;
+}
+
+.ws-roadHint{
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ws-roadList{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  margin-top: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ws-stageCard{
+  padding: 14px 14px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ws-stageTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.ws-stageLeft{
+  display:flex;
+  align-items:flex-start;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ws-stageBadge{
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display:grid;
+  place-items:center;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  font-weight: 900;
+}
+
+.ws-stageBadge.current{
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--line));
+}
+
+.ws-stageBadge.done{
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+  border-color: color-mix(in srgb, #22c55e 28%, var(--line));
+}
+
+.ws-stageTitle{
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  font-size: 15px;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ws-stageRight{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.ws-stageUnits{
+  margin-top: 12px;
+  display:none;
+}
+
+.ws-stageUnits.open{
+  display:block;
+}
+
+.ws-unitsGrid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+}
+
+.ws-unitCard{
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 82%, transparent);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+  min-height: 140px;
+  min-width: 0;
+}
+
+.ws-unitCard.current{
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+}
+
+.ws-unitCard.locked{
+  opacity: 0.65;
+}
+
+.ws-unitTitle{
+  font-weight: 900;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ws-unitSub{
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ws-unitMeta{
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+  margin-top: 4px;
+}
+
+/* Roadmap responsive */
+@media (max-width: 1100px){
+  .ws-unitsGrid{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 720px){
+  .ws-roadHeader{
+    flex-direction:column;
+    align-items:flex-start;
+    gap: 12px;
+  }
+  .ws-roadHeader > div{
+    min-width: 0;
+    max-width: 100%;
+  }
+  .ws-roadHeader .ws-sub{
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .ws-roadHeaderActions{
+    width: 100%;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  .ws-roadHeaderActions .ws-btn{
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .ws-roadProgress,
+  .ws-roadList .ws-card{
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  .ws-roadProgressTop{
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .ws-roadProgressTop .ws-cardTitle,
+  .ws-roadHint{
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+  .ws-roadBar{
+    min-width: 0;
+  }
+  .ws-stageCard{
+    min-width: 0;
+    max-width: 100%;
+    padding: 12px 10px;
+    overflow-wrap: break-word;
+  }
+  .ws-stageTop{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .ws-stageLeft{
+    min-width: 0;
+  }
+  .ws-stageLeft .ws-sub{
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .ws-stageRight{
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+  }
+  .ws-stageRight .ws-btn{
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+  .ws-unitsGrid{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .ws-unitCard{
+    min-width: 0;
+    max-width: 100%;
+    padding: 12px 10px;
+    min-height: auto;
+  }
+  .ws-unitCard .ws-btn{
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+}
+
+/* Roadmap: 매우 좁은 화면 (360px, 320px) */
+@media (max-width: 360px) {
+  .ws-roadHeader { padding: 6px 4px 10px; gap: 10px; }
+  .ws-roadHeaderActions { gap: 6px; }
+  .ws-roadHeaderActions .ws-btn { padding-left: 8px; padding-right: 8px; font-size: 13px; }
+  .ws-roadProgress { margin-top: 4px; }
+  .ws-roadProgressTop { margin-bottom: 8px; gap: 8px; }
+  .ws-roadHint { margin-top: 8px; font-size: 12px; }
+  .ws-roadList { gap: 10px; margin-top: 10px; }
+  .ws-stageCard { padding: 10px 8px; }
+  .ws-stageBadge { width: 34px; height: 34px; border-radius: 12px; font-size: 14px; }
+  .ws-stageTitle { font-size: 14px; }
+  .ws-stageTop { gap: 8px; }
+  .ws-stageRight { gap: 6px; }
+  .ws-stageUnits { margin-top: 10px; }
+  .ws-unitsGrid { gap: 8px; }
+  .ws-unitCard { padding: 10px 8px; gap: 6px; border-radius: 12px; }
+  .ws-unitSub { font-size: 11px; }
+  .ws-unitMeta { gap: 6px; }
+}
+
+@media (max-width: 320px) {
+  .ws-roadHeader { padding: 4px 4px 8px; gap: 8px; }
+  .ws-roadHeaderActions .ws-btn { padding-left: 6px; padding-right: 6px; font-size: 12px; }
+  .ws-roadProgressTop .ws-cardTitle { font-size: 13px; }
+  .ws-roadHint { font-size: 11px; }
+  .ws-stageCard { padding: 8px 6px; }
+  .ws-stageBadge { width: 30px; height: 30px; border-radius: 10px; }
+  .ws-stageTitle { font-size: 13px; }
+  .ws-stageLeft { gap: 8px; }
+  .ws-unitsGrid { gap: 6px; }
+  .ws-unitCard { padding: 8px 6px; border-radius: 10px; }
+}
+
+/* =============================
+   Store (StoreView: Avatar / Room)
+============================= */
+.ws-storePage {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 6px;
+  align-items: start;
+}
+
+.ws-storePreview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  position: sticky;
+  top: 16px;
+}
+
+.ws-storePreviewCard {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+
+/* 캐릭터: 세로로 길게 (머리→상의→하의→악세서리→프레임), 아이콘 작게 */
+.ws-storePreviewCharacter .ws-storePreviewTitle {
+  margin-bottom: 8px;
+}
+
+.ws-storePreviewCharacterBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 120px;
+}
+
+.ws-storePreviewCharacterPart {
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.ws-storePreviewCharacterPart.is-empty {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.ws-storePreviewTitle {
+  font-weight: 900;
+  font-size: 13px;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.ws-storePreviewIcons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 36px;
+}
+
+.ws-storePreviewIcon {
+  font-size: 28px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ws-storePreviewEmpty {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.ws-storeMain {
+  min-width: 0;
+}
+
+.ws-storeHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 8px 0 12px;
+}
+
+.ws-storeHeader .ws-title {
+  margin: 0;
+}
+
+.ws-storeBalance {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.ws-storeBalanceIcon {
+  font-size: 18px;
+}
+
+.ws-storeBalanceValue {
+  letter-spacing: -0.02em;
+}
+
+.ws-storeTabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.ws-storeTab {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.ws-storeTab:hover {
+  background: var(--pill);
+  color: var(--text);
+}
+
+.ws-storeTab.is-active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.ws-storeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.ws-storeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: var(--shadow-soft);
+  min-width: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ws-storeCard:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--line));
+}
+
+.ws-storeCard.is-equipped {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+}
+
+.ws-storeCard.common { }
+.ws-storeCard.rare {
+  border-color: color-mix(in srgb, var(--primary) 60%, var(--line));
+}
+.ws-storeCard.epic {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+.ws-storeCardIcon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.ws-storeCardName {
+  font-weight: 800;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.3;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ws-storeCardPrice {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.ws-storeCardActions {
+  margin-top: 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ws-storeCardEquipped {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.ws-storeCta {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  text-align: center;
+}
+
+.ws-storeCtaTitle {
+  font-weight: 900;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.ws-storeCtaSub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.ws-storeCtaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ws-storeOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.ws-storeModal {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-storeModalTitle {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.ws-storeModalBody {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.ws-storeModalIcon {
+  font-size: 28px;
+}
+
+.ws-storeModalPrice {
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.ws-storeModalActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 720px) {
+  .ws-storePage {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .ws-storePreview {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ws-storePreviewCard {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .ws-storeGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .ws-storeCard {
+    padding: 12px 8px;
+  }
+  .ws-storeCardIcon {
+    font-size: 30px;
+  }
+  .ws-storePreview {
     flex-direction: column;
   }
+}
 
-  .ws-btn {
+@media (max-width: 360px) {
+  .ws-storeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ws-storeGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .ws-storeCardName {
+    font-size: 12px;
+  }
+}
+
+/* =============================
+   Practice (PracticeView: 3열, 왼쪽 고민중 카드)
+============================= */
+.ws-practicePage {
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 6px;
+  margin-top: 12px;
+}
+
+.ws-practiceHeader {
+  margin-bottom: 14px;
+}
+
+.ws-practiceHeader .ws-title {
+  margin: 0;
+}
+
+.ws-practiceGrid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  align-items: stretch;
+  min-height: 280px;
+}
+
+.ws-practiceLeftCard {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ws-practiceLeftCard .ws-cardTitle {
+  margin-bottom: 0;
+  font-size: 18px;
+}
+
+.ws-practiceLeftCard .ws-sub {
+  margin-top: 10px;
+  flex: 1;
+}
+
+.ws-practiceStatus {
+  margin-top: 14px;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.ws-practiceCard {
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .ws-practiceGrid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    min-height: 0;
+  }
+  .ws-practiceLeftCard {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .ws-practiceGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================
+   Reports (FULL BLOCK - copy/paste)
+   aligned to current ReportsView.tsx
+============================= */
+
+.ws-reportFilters .ws-cardTitleRow {
+  margin-bottom: 10px;
+}
+
+/* Layout row (ReportsView uses ws-reportFilterRow) */
+.ws-reportFilterRow {
+  display: grid;
+  grid-template-columns: 160px 160px 1fr 1fr;
+  gap: 10px;
+  align-items: end;
+  margin-top: 10px;
+}
+
+.ws-reportFilterCell,
+.ws-reportFilterCellWide,
+.ws-reportFilterSort {
+  min-width: 0;
+}
+
+/* SelectField wrapper */
+.ws-reportSelectField {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ws-reportSelectLabel {
+  line-height: 1;
+}
+
+/* tighter radio rows */
+.ws-radioRowTight {
+  gap: 6px;
+}
+
+/* Select controls */
+.ws-select {
+  height: 40px;
+  padding: 0 12px;
+}
+
+/* Radio pill */
+.ws-radioPill {
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  cursor: pointer;
+  font-weight: 800;            /* ✅ tone match */
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+
+.ws-radioPill.is-checked {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+}
+
+.ws-radioPill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+/* Date grid */
+.ws-dateGridTight {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ws-dateInput {
+  height: 40px;
+  padding: 0 12px;
+}
+
+/* Info notice card */
+.ws-reportNotice {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 86%, transparent);
+}
+
+.ws-reportNoticeTitle {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* =============================
+   Results row
+============================= */
+
+.ws-reportRow {
+  width: 100%;
+  text-align: left;
+
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 12px 12px;
+  box-shadow: var(--shadow-soft);
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.ws-reportRow:hover {
+  background: color-mix(in srgb, var(--panel) 78%, var(--pill));
+  border-color: color-mix(in srgb, var(--primary) 22%, var(--line));
+  transform: translateY(-1px);
+}
+
+.ws-reportRow:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent),
+    var(--shadow-soft);
+}
+
+.ws-reportLeft {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.ws-reportTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-reportTitleText {
+  font-weight: 900;            /* ✅ match app headings */
+  letter-spacing: -0.01em;
+  font-size: 15px;             /* ✅ slightly closer to Home/Roadmap */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Kind tag */
+.ws-kindTag {
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 800;            /* ✅ tone match */
+  border: 1px solid var(--line);
+  background: var(--panel);
+  flex: 0 0 auto;
+}
+
+.ws-kindTag.is-quest {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+  color: color-mix(in srgb, var(--primary) 85%, var(--text));
+}
+
+.ws-kindTag.is-test {
+  border-color: color-mix(in srgb, var(--hero-c) 35%, var(--line));
+  background: color-mix(in srgb, var(--hero-c) 10%, var(--panel));
+  color: color-mix(in srgb, var(--hero-c) 85%, var(--text));
+}
+
+.ws-reportMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.ws-pillMini {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  font-weight: 800;            /* ✅ tone match */
+  color: var(--text);
+}
+
+.ws-reportDate {
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* Right side */
+.ws-reportRight {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+/* ✅ Score (IMPORTANT) */
+.ws-reportScore {
+  min-width: 92px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+  padding: 10px 12px;
+  display: grid;
+  justify-items: center;
+  box-shadow: var(--shadow-soft);
+
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.ws-reportRewards {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* Level badge */
+.ws-levelBadge {
+  font-size: 11px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+}
+
+.ws-levelBadge.promoted {
+  border-color: color-mix(in srgb, var(--hero-b) 28%, var(--line));
+  background: color-mix(in srgb, var(--hero-b) 10%, var(--panel));
+  color: color-mix(in srgb, var(--hero-b) 90%, var(--text));
+}
+
+.ws-levelBadge.demoted {
+  border-color: color-mix(in srgb, var(--warn) 35%, var(--line));
+  background: color-mix(in srgb, var(--warn) 12%, var(--panel));
+  color: color-mix(in srgb, var(--warn) 90%, var(--text));
+}
+
+.ws-levelBadge.same {
+  border-color: color-mix(in srgb, var(--primary) 18%, var(--line));
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+  color: var(--text);
+}
+
+.ws-levelBadge.none {
+  opacity: 0.8;
+}
+
+/* =============================
+   Responsive
+============================= */
+@media (max-width: 1100px) {
+  .ws-reportFilterRow {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .ws-reportRow {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .ws-reportRight {
+    width: 100%;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ws-reportTitleText {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+  }
+}
+
+/* =============================
+   Reports (Roadmap-like tone)
+   - drop-in replacement for Reports section
+============================= */
+
+/* 전체 리포트 페이지에서 공통 타이포 톤 살짝 정리 */
+.ws-reportFilters,
+.ws-reportNotice,
+.ws-reportRow {
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Header spacing (기존 topbar 톤 유지) ---- */
+.ws-topbar .ws-sub {
+  margin-top: 6px;
+}
+
+/* ---- Info notice card ---- */
+.ws-reportNotice {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+.ws-reportNoticeTitle {
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+
+/* ---- Filters card ---- */
+.ws-reportFilters .ws-cardTitleRow {
+  margin-bottom: 12px;
+}
+
+/* ReportsView가 실제로 쓰는 Row 클래스 */
+.ws-reportFilterRow {
+  display: grid;
+  grid-template-columns: 170px 170px 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+  margin-top: 12px;
+}
+
+/* Reports 페이지 전용: 좌우 절반 레이아웃 (Stage+Unit+Range | Type+Sort) */
+.ws-reportFilterRow--reports {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  row-gap: 12px;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.ws-reportFilterCell,
+.ws-reportFilterCellWide,
+.ws-reportFilterSort {
+  min-width: 0;
+}
+
+/* SelectField wrapper */
+.ws-reportSelectField {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ws-reportSelectLabel,
+.ws-mutedSmall {
+  font-weight: 900;
+}
+
+/* ---- 핵심: select / input을 로드맵 톤으로 스킨 ---- */
+.ws-select,
+.ws-dateInput {
+  height: 40px;
+  padding: 0 12px;
+
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  color: var(--text);
+
+  font-size: 13px;
+  font-weight: 800;
+
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* select 화살표 기본 느낌 줄이기 (가능한 브라우저에서만) */
+.ws-select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 16px,
+    calc(100% - 12px) 16px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
+}
+
+.ws-select:disabled,
+.ws-dateInput:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: color-mix(in srgb, var(--panel) 86%, transparent);
+}
+
+.ws-select:focus,
+.ws-dateInput:focus {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+/* ---- Radio pills (Range/Type/Sort) : 로드맵 칩 톤 ---- */
+.ws-radioRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ws-radioRowTight {
+  gap: 8px;
+}
+
+.ws-radioPill {
+  height: 36px;
+  padding: 0 12px;
+
+  display: inline-flex;
+  align-items: center;
+
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 90%, transparent);
+  color: var(--text);
+
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 13px;
+
+  position: relative;
+  box-shadow: var(--shadow-soft);
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.ws-radioPill:hover {
+  background: color-mix(in srgb, var(--panel) 82%, var(--pill));
+  border-color: color-mix(in srgb, var(--primary) 18%, var(--line));
+  transform: translateY(-1px);
+}
+
+.ws-radioPill.is-checked {
+  border-color: color-mix(in srgb, var(--primary) 32%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+.ws-radioPill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+/* ---- Custom date grid ---- */
+.ws-dateGridTight {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ws-dateField {
+  display: grid;
+  gap: 8px;
+}
+
+/* ---- Results Card ---- */
+.ws-reportRow {
+  width: 100%;
+  text-align: left;
+
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  color: var(--text);
+
+  border-radius: 18px;
+  padding: 14px 14px;
+
+  box-shadow: var(--shadow-soft);
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: center;
+
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.ws-reportRow:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--primary) 20%, var(--line));
+  background: color-mix(in srgb, var(--panel) 86%, var(--pill));
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.10);
+}
+
+.ws-reportRow:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent),
+    0 16px 30px rgba(15, 23, 42, 0.10);
+}
+
+.ws-reportLeft {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.ws-reportTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-reportTitleText {
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Kind tag: 로드맵 배지 같은 느낌 */
+.ws-kindTag {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: var(--shadow-soft);
+  flex: 0 0 auto;
+}
+
+.ws-kindTag.is-quest {
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+  color: color-mix(in srgb, var(--primary) 88%, var(--text));
+}
+
+.ws-kindTag.is-test {
+  border-color: color-mix(in srgb, var(--hero-c) 30%, var(--line));
+  background: color-mix(in srgb, var(--hero-c) 10%, var(--panel));
+  color: color-mix(in srgb, var(--hero-c) 88%, var(--text));
+}
+
+.ws-reportMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.ws-pillMini {
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  font-weight: 900;
+}
+
+.ws-reportDate {
+  font-weight: 800;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Right side */
+.ws-reportRight {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+}
+
+/* 점수 강조(지금 너 화면에서 가장 중요했던 부분) */
+.ws-reportScore {
+  min-width: 92px;
+  height: 44px;
+
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--primary) 26%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+
+  display: grid;
+  place-items: center;
+
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-reportRewards {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--muted);
+}
+
+/* 레벨 뱃지 */
+.ws-levelBadge {
+  font-size: 11px;
+  font-weight: 900;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  color: var(--muted);
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-levelBadge.promoted {
+  border-color: color-mix(in srgb, var(--hero-b) 28%, var(--line));
+  background: color-mix(in srgb, var(--hero-b) 12%, var(--panel));
+  color: color-mix(in srgb, var(--hero-b) 90%, var(--text));
+}
+
+.ws-levelBadge.demoted {
+  border-color: color-mix(in srgb, var(--warn) 32%, var(--line));
+  background: color-mix(in srgb, var(--warn) 12%, var(--panel));
+  color: color-mix(in srgb, var(--warn) 92%, var(--text));
+}
+
+.ws-levelBadge.same {
+  border-color: color-mix(in srgb, var(--primary) 18%, var(--line));
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+  color: var(--text);
+}
+
+.ws-levelBadge.none {
+  opacity: 0.85;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1100px) {
+  .ws-reportFilterRow {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Reports 필터: 모바일에서 1열 (Stage+Unit → Type → Range → Sort) */
+@media (max-width: 640px) {
+  .ws-reportFilterRow--reports {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .ws-reportRow {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .ws-reportRight {
+    width: 100%;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ws-reportTitleText {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+  }
+}
+
+/* Reports: 매우 좁은 화면 (360px, 320px) */
+@media (max-width: 360px) {
+  .ws-reportFilters .ws-cardTitleRow { margin-bottom: 8px; }
+  .ws-reportFilterRow--reports { column-gap: 12px; row-gap: 10px; margin-top: 8px; }
+  .ws-reportFilterCell .ws-select,
+  .ws-reportSelectField { min-width: 0; }
+  .ws-reportRow { padding: 10px 8px; }
+  .ws-reportTitleText { font-size: 14px; }
+  .ws-reportMeta { gap: 6px; }
+  .ws-reportScore { font-size: 18px; }
+}
+
+@media (max-width: 320px) {
+  .ws-reportFilterRow--reports { column-gap: 8px; row-gap: 8px; margin-top: 6px; }
+  .ws-reportRow { padding: 8px 6px; }
+  .ws-reportTitleText { font-size: 13px; }
+  .ws-pillMini { font-size: 11px; padding: 2px 6px; }
+}
+
+
+
+/* =============================
+   Report Detail (ws-rd-*) ONLY
+   - for ReportDetailView.tsx
+   - Mobile-first wrapping for <=390px
+============================= */
+
+/* ---------------------------------
+   0) Global safety inside detail
+---------------------------------- */
+/* detail 안에서 텍스트는 무조건 줄바꿈 가능하게 */
+.ws-card,
+.ws-rdQaCard,
+.ws-rdNotesPanel,
+.ws-rdBreakItem,
+.ws-rdFixPanel,
+.ws-rdBetterPanel {
+  min-width: 0;
+}
+
+.ws-rdBodyText,
+.ws-rdQaText,
+.ws-rdFixText,
+.ws-rdBetterText,
+.ws-rdList,
+.ws-rdList li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* ---------------------------------
+   1) 2-col layout: Evaluation | Notes
+---------------------------------- */
+.ws-rdTwoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+  min-width: 0;
+}
+
+/* ---------------------------------
+   2) Overview
+---------------------------------- */
+.ws-rdOverviewRow {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+
+.ws-rdMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.ws-rdRewardsRow {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.ws-rdScoreBox {
+  min-width: 92px;
+  height: 64px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--line));
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel));
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  place-items: center;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.ws-rdScoreNum {
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.ws-rdScoreLabel {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* section label / body text */
+.ws-rdSectionLabel {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ws-rdBodyText {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--text) 88%, transparent);
+}
+
+/* ---------------------------------
+   3) Breakdown list — hierarchy
+---------------------------------- */
+.ws-rdBreakList {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-rdBreakItem {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 86%, transparent);
+  border-radius: 16px;
+  padding: 12px 12px;
+  box-shadow: var(--shadow-soft);
+  min-width: 0;
+}
+
+.ws-rdBreakTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-rdBreakLabel {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ws-rdBreakScore {
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--text) 92%, transparent);
+  flex: 0 0 auto;
+}
+
+.ws-rdBreakBar {
+  margin-top: 10px;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+}
+
+.ws-rdBreakFill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+}
+
+/* ---------------------------------
+   4) Coach notes panels
+---------------------------------- */
+.ws-rdNotesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-rdNotesPanel {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 86%, transparent);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+  min-width: 0;
+}
+
+.ws-rdNotesTitle {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.ws-rdList {
+  margin: 0;
+  padding-left: 18px;
+  color: color-mix(in srgb, var(--text) 86%, transparent);
+  line-height: 1.55;
+}
+
+.ws-rdList li {
+  margin-top: 6px;
+}
+
+/* ---------------------------------
+   5) Tone & clarity grid
+---------------------------------- */
+.ws-rdToneGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ---------------------------------
+   6) Transcript cards
+---------------------------------- */
+.ws-rdTranscriptList {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-rdQaCard {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  min-width: 0;
+}
+
+.ws-rdQaCard.is-ok {
+  border-color: color-mix(in srgb, var(--hero-b) 26%, var(--line));
+}
+
+.ws-rdQaCard.is-bad {
+  border-color: color-mix(in srgb, var(--warn) 28%, var(--line));
+}
+
+.ws-rdQaTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-rdQaIndex {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+
+.ws-rdStatus {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 900;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.ws-rdStatus.ok {
+  border-color: color-mix(in srgb, var(--hero-b) 28%, var(--line));
+  background: color-mix(in srgb, var(--hero-b) 10%, var(--panel));
+  color: color-mix(in srgb, var(--hero-b) 90%, var(--text));
+}
+
+.ws-rdStatus.bad {
+  border-color: color-mix(in srgb, var(--warn) 30%, var(--line));
+  background: color-mix(in srgb, var(--warn) 10%, var(--panel));
+  color: color-mix(in srgb, var(--warn) 90%, var(--text));
+}
+
+.ws-rdQaBlock {
+  margin-top: 10px;
+  min-width: 0;
+}
+
+.ws-rdQaLabel {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ws-rdQaText {
+  margin-top: 6px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--text) 90%, transparent);
+}
+
+/* ---------------------------------
+   7) Fix / Better answer separation
+---------------------------------- */
+.ws-rdFixWrap {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ws-rdFixPanel {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--warn) 28%, var(--line));
+  background: color-mix(in srgb, var(--warn) 8%, var(--panel));
+  padding: 12px;
+  min-width: 0;
+}
+
+.ws-rdFixTitle {
+  font-size: 12px;
+  font-weight: 900;
+  color: color-mix(in srgb, var(--warn) 85%, var(--text));
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ws-rdFixText {
+  margin-top: 8px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--text) 88%, transparent);
+}
+
+.ws-rdBetterPanel {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--line));
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+  padding: 12px;
+  min-width: 0;
+}
+
+.ws-rdBetterTitle {
+  font-size: 12px;
+  font-weight: 900;
+  color: color-mix(in srgb, var(--primary) 90%, var(--text));
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ws-rdBetterText {
+  margin-top: 8px;
+  font-weight: 900;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--text) 92%, transparent);
+}
+
+/* =================================
+   Responsive
+   - 1100: 2col -> 1col (tablet)
+   - 640 : layout stack (phone)
+   - 390 : force wrap, reduce padding, make everything vertical-friendly
+================================= */
+@media (max-width: 1100px) {
+  .ws-rdTwoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .ws-rdOverviewRow {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .ws-rdScoreBox {
+    width: fit-content;
+  }
+
+  .ws-rdNotesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ws-rdToneGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ws-rdTwoCol {
+    gap: 12px;
+  }
+
+  .ws-rdNotesGrid {
+    gap: 10px;
+  }
+
+  .ws-rdQaCard {
+    padding: 12px;
+  }
+}
+
+/* ✅✅ 핵심: <=390px에서 "무조건 줄바꿈" */
+@media (max-width: 390px) {
+  /* 카드 패딩 살짝 줄여서 글자 공간 확보 */
+  .ws-card,
+  .ws-rdQaCard,
+  .ws-rdNotesPanel,
+  .ws-rdBreakItem,
+  .ws-rdFixPanel,
+  .ws-rdBetterPanel {
+    padding: 12px;
+  }
+
+  /* Overview: 점수 박스도 아래로 내려와도 OK */
+  .ws-rdOverviewRow {
+    gap: 10px;
+  }
+
+  .ws-rdScoreBox {
+    min-width: 88px;
+    height: 60px;
+    border-radius: 16px;
+  }
+
+  .ws-rdScoreNum {
+    font-size: 24px;
+  }
+
+  /* 뱃지/상태는 줄바꿈 허용(가로 꽉 차면 아래로 내려감) */
+  .ws-rdMetaRow,
+  .ws-rdRewardsRow {
+    gap: 6px;
+  }
+
+  /* Transcript 상단(인덱스 + 상태)도 좁으면 세로로 */
+  .ws-rdQaTop {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  /* 라벨은 유지, 텍스트는 무조건 wrap */
+  .ws-rdQaLabel {
+    letter-spacing: 0.02em;
+  }
+
+  /* 긴 단어/URL/특수문자도 깨지지 않게 */
+  .ws-rdBodyText,
+  .ws-rdQaText,
+  .ws-rdFixText,
+  .ws-rdBetterText {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* Report Detail: 360px, 320px 더 타이트 */
+@media (max-width: 360px) {
+  .ws-card,
+  .ws-rdQaCard,
+  .ws-rdNotesPanel,
+  .ws-rdBreakItem,
+  .ws-rdFixPanel,
+  .ws-rdBetterPanel {
+    padding: 10px;
+  }
+  .ws-rdOverviewRow { gap: 8px; }
+  .ws-rdScoreBox { min-width: 76px; height: 52px; border-radius: 12px; }
+  .ws-rdScoreNum { font-size: 20px; }
+  .ws-rdMetaRow,
+  .ws-rdRewardsRow { gap: 4px; }
+}
+
+@media (max-width: 320px) {
+  .ws-card,
+  .ws-rdQaCard,
+  .ws-rdNotesPanel,
+  .ws-rdBreakItem,
+  .ws-rdFixPanel,
+  .ws-rdBetterPanel {
+    padding: 8px;
+  }
+  .ws-rdScoreBox { min-width: 68px; height: 48px; }
+  .ws-rdScoreNum { font-size: 18px; }
+}
+
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .ws-rdTwoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .ws-rdOverviewRow {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .ws-rdScoreBox {
+    width: fit-content;
+  }
+
+  .ws-rdNotesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ws-rdToneGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+/* ===== NEXT STEP HERO (force visible) ===== */
+.ws-nextStepHero {
+  margin-top: 14px;
+  border-radius: 24px;
+  padding: 18px;
+
+  /* fallback: 최소 카드 형태 보장 */
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+
+  /* nice layer (지원되면 적용) */
+  background:
+    radial-gradient(1200px 420px at 20% 10%,
+      color-mix(in srgb, var(--hero-a) 35%, transparent),
+      transparent 60%),
+    radial-gradient(900px 400px at 90% 20%,
+      color-mix(in srgb, var(--hero-c) 30%, transparent),
+      transparent 62%),
+    radial-gradient(800px 380px at 60% 100%,
+      color-mix(in srgb, var(--hero-b) 25%, transparent),
+      transparent 65%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--panel) 70%, transparent),
+      var(--panel));
+}
+
+.ws-nextStepHeroTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.ws-nextStepEyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 900;
+  color: var(--muted);
+}
+
+.ws-nextStepTitle {
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.ws-nextStepDesc {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+  max-width: 60ch;
+}
+
+.ws-nextStepActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 4px;
+}
+
+@media (max-width: 1100px) {
+  .ws-nextStepHeroTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ws-nextStepActions {
+    justify-content: flex-start;
+  }
+}
+
+
+
+
+
+/** 스텟css 시작 */
+/* ==========================================
+   WorkSpeak - Stats (Clean Light UI)
+   Paste at the BOTTOM of index.css
+========================================== */
+
+:root{
+  --ws-bg: #f6f7fb;
+  --ws-card: #ffffff;
+  --ws-cardSoft: #fbfbff;
+  --ws-border: rgba(15, 23, 42, 0.10);
+  --ws-text: rgba(15, 23, 42, 0.92);
+  --ws-muted: rgba(15, 23, 42, 0.60);
+  --ws-muted2: rgba(15, 23, 42, 0.45);
+  --ws-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --ws-shadow2: 0 6px 18px rgba(15, 23, 42, 0.07);
+  --ws-radius: 18px;
+
+  --ws-accent: #2563eb;
+  --ws-accentSoft: rgba(37, 99, 235, 0.12);
+  --ws-good: #16a34a;
+  --ws-bad: #dc2626;
+}
+
+.ws-statsPage{
+  min-height: 100vh;
+  background: var(--ws-bg);
+  color: var(--ws-text);
+  padding: 22px;
+}
+
+/* Header */
+.ws-statsHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ws-title{
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.2px;
+}
+
+.ws-subtitle{
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ws-muted);
+}
+
+/* Toggle */
+.ws-rangeToggle{
+  display:flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--ws-border);
+  box-shadow: var(--ws-shadow2);
+}
+
+.ws-toggleBtn{
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--ws-muted);
+  background: transparent;
+}
+
+.ws-toggleBtn.active{
+  color: var(--ws-text);
+  background: rgba(15, 23, 42, 0.06);
+}
+
+/* Layout */
+.ws-hero{
+  display:grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+/* Main hero card */
+.ws-heroCard{
+  background: linear-gradient(140deg, rgba(37,99,235,0.12), rgba(16,185,129,0.10) 55%, rgba(255,255,255,0.0));
+  border: 1px solid rgba(37,99,235,0.18);
+  border-radius: 22px;
+  box-shadow: var(--ws-shadow);
+  padding: 18px;
+}
+
+.ws-heroTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.ws-heroLabel{
+  font-size: 12px;
+  color: var(--ws-muted);
+  font-weight: 900;
+}
+
+.ws-heroExplain{
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ws-muted);
+  line-height: 1.35;
+}
+
+/* Score pill */
+.ws-scorePill{
+  display:flex;
+  flex-direction: column;
+  align-items:flex-end;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--ws-border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--ws-shadow2);
+  min-width: 120px;
+}
+
+.ws-scoreMain{
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: -0.2px;
+}
+
+.ws-scoreDelta{
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.ws-scoreDelta.up{ color: var(--ws-good); }
+.ws-scoreDelta.down{ color: var(--ws-bad); }
+
+.ws-scoreHint{
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--ws-muted2);
+}
+
+/* Chart box with labels */
+.ws-chartBox{
+  width: 100%;
+}
+
+.ws-chartInner{
+  background: rgba(255,255,255,0.72);
+  border: 1px solid var(--ws-border);
+  border-radius: 16px;
+  padding: 12px;
+  min-height: clamp(96px, 18vw, 150px);
+  display:flex;
+  align-items:center;
+}
+
+.ws-chartLabels{
+  display:flex;
+  justify-content:space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--ws-muted2);
+  padding: 0 4px;
+}
+
+.ws-heroChartRow{
+  margin-top: 14px;
+}
+
+/* Activity pills */
+.ws-activityPills{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ws-pill{
+  background: #fff;
+  border: 1px solid var(--ws-border);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: var(--ws-shadow2);
+}
+
+.ws-pillTop{
+  font-size: 11px;
+  color: var(--ws-muted);
+  font-weight: 900;
+}
+
+.ws-pillVal{
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+/* Headline */
+.ws-headline{
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--ws-muted);
+  font-weight: 700;
+}
+
+/* Side cards */
+.ws-heroSide{
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+}
+
+.ws-miniCard{
+  background: #fff;
+  border: 1px solid var(--ws-border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--ws-shadow2);
+}
+
+.ws-miniTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: 10px;
+}
+
+.ws-miniLabel{
+  font-size: 12px;
+  font-weight: 950;
+  color: var(--ws-muted);
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.ws-miniValue{
+  font-size: 13px;
+  font-weight: 950;
+  color: var(--ws-text);
+}
+
+.ws-miniSub{
+  font-size: 12px;
+  color: var(--ws-muted);
+  margin-bottom: 10px;
+}
+
+.ws-miniBars{
+  border: 1px solid var(--ws-border);
+  border-radius: 14px;
+  background: var(--ws-cardSoft);
+  padding: 10px;
+}
+
+/* Weak spot metric line */
+.ws-miniMetricLine{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom: 10px;
+}
+
+.ws-miniMetricVal{
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.ws-miniUnit{
+  font-size: 12px;
+  color: var(--ws-muted);
+  font-weight: 900;
+}
+
+.ws-miniDelta{
+  font-size: 12px;
+  font-weight: 950;
+}
+.ws-miniDelta.up{ color: var(--ws-good); }
+.ws-miniDelta.down{ color: var(--ws-bad); }
+
+/* Buttons */
+.ws-primaryBtn{
+  margin-top: 12px;
+  width: 100%;
+  border: 0;
+  cursor:pointer;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 950;
+  color: #fff;
+  background: var(--ws-accent);
+}
+
+.ws-primaryBtn:disabled{
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ws-secondaryBtn{
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid var(--ws-border);
+  cursor:pointer;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 950;
+  color: var(--ws-text);
+  background: #fff;
+}
+
+.ws-secondaryBtn:hover{ background: rgba(15,23,42,0.03); }
+
+/* SVG styling */
+.ws-spark,
+.ws-minibars{
+  width: 100%;
+  height: 100%;
+  display:block;
+}
+
+.ws-sparkLine{
+  stroke: var(--ws-accent);
+  opacity: 0.95;
+}
+
+.ws-bar{
+  fill: rgba(37, 99, 235, 0.18);
+  stroke: rgba(37, 99, 235, 0.12);
+}
+
+/* Metrics list */
+.ws-metrics{
+  margin-top: 14px;
+}
+
+.ws-sectionTitle{
+  font-size: 13px;
+  font-weight: 950;
+  color: var(--ws-muted);
+  margin: 10px 0 10px;
+}
+
+.ws-metricList{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.ws-metricRow{
+  background: #fff;
+  border: 1px solid var(--ws-border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--ws-shadow2);
+  display:grid;
+  grid-template-columns: 1fr 1.3fr auto;
+  gap: 12px;
+  align-items:center;
+}
+
+.ws-metricMain{ min-width: 0; }
+
+.ws-metricLabel{
+  font-size: 13px;
+  font-weight: 950;
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ws-metricSub{
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ws-muted);
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+.ws-metricNow{
+  font-weight: 950;
+  color: var(--ws-text);
+}
+
+.ws-delta{ font-weight: 950; }
+.ws-delta.up{ color: var(--ws-good); }
+.ws-delta.down{ color: var(--ws-bad); }
+
+.ws-metricChart{
+  min-width: 0;
+}
+
+.ws-inlineBtn{
+  border: 1px solid var(--ws-border);
+  background: #fff;
+  color: var(--ws-text);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-weight: 950;
+  cursor:pointer;
+  white-space: nowrap;
+}
+
+.ws-inlineBtn:disabled{
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ws-footerNote{
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--ws-muted2);
+  text-align:center;
+}
+
+/* Info tooltip (CSS only) */
+.ws-info{
+  position: relative;
+  display:inline-flex;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  align-items:center;
+  justify-content:center;
+  font-size: 12px;
+  font-weight: 950;
+  color: rgba(15,23,42,0.70);
+  background: rgba(15,23,42,0.06);
+  border: 1px solid rgba(15,23,42,0.10);
+  cursor: default;
+}
+
+.ws-infoPop{
+  position:absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: min(280px, 72vw);
+  padding: 10px 10px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--ws-border);
+  box-shadow: var(--ws-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 10;
+}
+
+.ws-infoTitle{
+  font-size: 12px;
+  font-weight: 950;
+  color: var(--ws-text);
+}
+
+.ws-infoBody{
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ws-muted);
+  line-height: 1.35;
+}
+
+.ws-info:hover .ws-infoPop,
+.ws-info:focus .ws-infoPop{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile */
+@media (max-width: 520px){
+  .ws-statsPage{ padding: 14px; }
+
+  .ws-hero{ grid-template-columns: 1fr; }
+
+  .ws-activityPills{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .ws-metricRow{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ws-inlineBtn{
     width: 100%;
   }
 }
 
-@media (max-width: 520px) {
-  .ws-logo {
-    font-size: 16px;
-  }
+/* Stats: 매우 좁은 화면 (360px, 320px) */
+@media (max-width: 360px) {
+  .ws-statsPage { padding: 10px; }
+  .ws-activityPills { gap: 6px; }
+  .ws-metricRow { gap: 8px; }
+}
 
-  .ws-card-title {
-    font-size: 18px;
-    line-height: 1.25;
-  }
+@media (max-width: 320px) {
+  .ws-statsPage { padding: 8px; }
+  .ws-metricRow { gap: 6px; }
+}
 
-  .ws-pill-group {
-    gap: 4px;
+/* =========================
+   Stats Tabs + Panels + Activity + Vocabulary
+   Paste at the bottom of index.css
+========================= */
+
+.ws-tabs{
+  display:flex;
+  gap: 8px;
+  margin: 10px 0 14px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--ws-border);
+  box-shadow: var(--ws-shadow2);
+  width: fit-content;
+}
+
+.ws-tab{
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 950;
+  color: var(--ws-muted);
+  background: transparent;
+}
+
+.ws-tab.active{
+  color: var(--ws-text);
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.ws-panel{
+  background: #fff;
+  border: 1px solid var(--ws-border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--ws-shadow2);
+  margin-bottom: 12px;
+}
+
+.ws-panelTitle{
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--ws-text);
+}
+
+.ws-panelSub{
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ws-muted);
+  line-height: 1.35;
+}
+
+.ws-panelBody{
+  margin-top: 12px;
+}
+
+/* Heatmap */
+.ws-heatWrap{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.ws-heatLegend{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--ws-muted);
+}
+
+.ws-heatDots{
+  display:flex;
+  gap: 6px;
+  align-items:center;
+}
+
+.ws-heatDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(15,23,42,0.06);
+}
+
+.ws-heatGrid{
+  display:grid;
+  gap: 6px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ws-heatCol{
+  display:grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.ws-heatCell{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: rgba(37,99,235,0.06);
+}
+
+/* levels */
+.ws-heatCell.l0{ background: rgba(15,23,42,0.04); }
+.ws-heatCell.l1{ background: rgba(37,99,235,0.10); }
+.ws-heatCell.l2{ background: rgba(37,99,235,0.16); }
+.ws-heatCell.l3{ background: rgba(37,99,235,0.22); }
+.ws-heatCell.l4{ background: rgba(37,99,235,0.30); }
+
+/* Stacked bars */
+.ws-stackWrap{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+.ws-stackLegend{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ws-tag{
+  font-size: 11px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--ws-border);
+  background: rgba(15,23,42,0.03);
+  color: var(--ws-muted);
+}
+
+.ws-tag.s1{ background: rgba(37,99,235,0.10); }
+.ws-tag.s2{ background: rgba(16,185,129,0.10); }
+.ws-tag.s3{ background: rgba(245,158,11,0.10); }
+.ws-tag.s4{ background: rgba(168,85,247,0.10); }
+
+.ws-stackGrid{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  align-items:end;
+}
+
+.ws-stackItem{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 8px;
+}
+
+.ws-stackBar{
+  width: 100%;
+  max-width: 34px;
+  height: 120px;
+  border-radius: 14px;
+  background: rgba(15,23,42,0.04);
+  border: 1px solid rgba(15,23,42,0.06);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+
+.ws-stackSeg{
+  width: 100%;
+}
+
+.ws-stackSeg.s1{ background: rgba(37,99,235,0.26); }
+.ws-stackSeg.s2{ background: rgba(16,185,129,0.22); }
+.ws-stackSeg.s3{ background: rgba(245,158,11,0.22); }
+.ws-stackSeg.s4{ background: rgba(168,85,247,0.20); }
+
+.ws-stackLabel{
+  font-size: 11px;
+  color: var(--ws-muted2);
+  font-weight: 900;
+}
+
+/* Vocabulary */
+.ws-vocabKpis{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ws-vocabCard{
+  border: 1px solid var(--ws-border);
+  border-radius: 16px;
+  padding: 12px;
+  background: var(--ws-cardSoft);
+}
+
+.ws-vocabLabel{
+  font-size: 11px;
+  font-weight: 950;
+  color: var(--ws-muted);
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.ws-vocabValue{
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 950;
+  color: var(--ws-text);
+}
+
+.ws-vocabHint{
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ws-muted2);
+  line-height: 1.3;
+}
+
+.ws-phraseList{
+  margin-top: 12px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.ws-phraseRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  border: 1px solid var(--ws-border);
+  border-radius: 16px;
+  padding: 12px;
+  background: #fff;
+}
+
+.ws-phraseMain{
+  min-width: 0;
+}
+
+.ws-phraseText{
+  font-size: 13px;
+  font-weight: 950;
+  color: var(--ws-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ws-phraseMeta{
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ws-muted);
+}
+
+/* Mobile */
+@media (max-width: 520px){
+  .ws-tabs{ width: 100%; justify-content: space-between; }
+  .ws-vocabKpis{ grid-template-columns: 1fr; }
+  .ws-stackGrid{ grid-template-columns: repeat(7, 1fr); }
+  .ws-stackBar{ max-width: 28px; height: 110px; }
+}
+
+
+/* =========================
+   Key metrics -> mini card grid (4 cols)
+========================= */
+
+.ws-metricGrid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.ws-miniMetricCard{
+  background: #fff;
+  border: 1px solid var(--ws-border);
+  border-radius: 18px;
+  box-shadow: var(--ws-shadow2);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.ws-miniMetricTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ws-miniMetricLabel{
+  font-size: 12px;
+  font-weight: 950;
+  color: var(--ws-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ws-miniMetricDelta{
+  font-size: 12px;
+  font-weight: 950;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--ws-border);
+  background: rgba(15,23,42,0.03);
+  white-space: nowrap;
+}
+
+.ws-miniMetricDelta.up{ color: #16a34a; }
+.ws-miniMetricDelta.down{ color: #dc2626; }
+
+.ws-miniMetricValueRow{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ws-miniMetricValue{
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--ws-text);
+}
+
+.ws-miniMetricChart{
+  /* 차트 박스가 카드 안에서 예쁘게 */
+  border: 1px solid rgba(15,23,42,0.06);
+  background: rgba(15,23,42,0.02);
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.ws-miniMetricBtn{
+  margin-top: 2px;
+  border: 1px solid var(--ws-border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  color: var(--ws-text);
+}
+
+.ws-miniMetricBtn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .ws-metricGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+@media (max-width: 520px){
+  .ws-metricGrid{
+    grid-template-columns: 1fr; /* 390px 안전 */
+  }
+}
+
+@media (max-width: 360px) {
+  .ws-metricGrid { gap: 8px; }
+}
+
+@media (max-width: 320px) {
+  .ws-metricGrid { gap: 6px; }
 }
