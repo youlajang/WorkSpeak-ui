@@ -371,6 +371,11 @@ body {
 .ws-btn-sm {
   padding: 8px 12px;
   font-size: 13px;
+  font-weight: 800;
+}
+
+.ws-btn-primary.ws-btn-sm {
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .ws-btn-primary {
@@ -383,6 +388,48 @@ body {
   background: transparent;
   color: var(--text);
   border-color: var(--line);
+}
+
+/* Button hierarchy: Secondary (2nd level) */
+.ws-btn-secondary {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+  border: 1px solid var(--line);
+  font-weight: 800;
+}
+
+.ws-btn-secondary:hover {
+  background: color-mix(in srgb, var(--text) 12%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--line));
+}
+
+/* Button hierarchy: Tertiary (3rd level) */
+.ws-btn-tertiary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.ws-btn-tertiary:hover {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  opacity: 1;
+}
+
+/* Button hierarchy: Utility (4th level) */
+.ws-btn-utility {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.ws-btn-utility:hover {
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  color: var(--text);
 }
 
 .ws-btn-disabled {
@@ -475,8 +522,16 @@ body {
 }
 
 .ws-btn-hero {
-  padding: 12px 18px;
-  font-size: 15px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 16px 32px color-mix(in srgb, var(--primary) 35%, transparent);
+  transition: all 0.2s ease;
+}
+
+.ws-btn-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px color-mix(in srgb, var(--primary) 40%, transparent);
 }
 
 .ws-stepHint {
@@ -943,21 +998,7 @@ body {
   box-sizing: border-box;
 }
 
-.ws-roadHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:14px;
-  padding: 8px 6px 12px;
-  min-width: 0;
-}
-
-.ws-roadHeaderActions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  flex-shrink: 0;
-}
+/* ws-roadHeader and ws-roadHeaderActions are now using ws-topbar - styles removed */
 
 .ws-roadProgress{
   margin-top: 6px;
@@ -1134,26 +1175,26 @@ body {
 }
 
 @media (max-width: 720px){
-  .ws-roadHeader{
+  .ws-topbar{
     flex-direction:column;
     align-items:flex-start;
     gap: 12px;
   }
-  .ws-roadHeader > div{
+  .ws-topbar > div{
     min-width: 0;
     max-width: 100%;
   }
-  .ws-roadHeader .ws-sub{
+  .ws-topbar .ws-sub{
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
-  .ws-roadHeaderActions{
+  .ws-topbar > div:last-child{
     width: 100%;
     flex-shrink: 1;
     min-width: 0;
   }
-  .ws-roadHeaderActions .ws-btn{
+  .ws-topbar > div:last-child .ws-btn{
     flex: 1 1 auto;
     min-width: 0;
     white-space: normal;
@@ -1230,9 +1271,9 @@ body {
 
 /* Roadmap: 매우 좁은 화면 (360px, 320px) */
 @media (max-width: 360px) {
-  .ws-roadHeader { padding: 6px 4px 10px; gap: 10px; }
-  .ws-roadHeaderActions { gap: 6px; }
-  .ws-roadHeaderActions .ws-btn { padding-left: 8px; padding-right: 8px; font-size: 13px; }
+  .ws-topbar { padding: 6px 4px 10px; gap: 10px; }
+  .ws-topbar > div:last-child { gap: 6px; }
+  .ws-topbar > div:last-child .ws-btn { padding-left: 8px; padding-right: 8px; font-size: 13px; }
   .ws-roadProgress { margin-top: 4px; }
   .ws-roadProgressTop { margin-bottom: 8px; gap: 8px; }
   .ws-roadHint { margin-top: 8px; font-size: 12px; }
@@ -1250,8 +1291,8 @@ body {
 }
 
 @media (max-width: 320px) {
-  .ws-roadHeader { padding: 4px 4px 8px; gap: 8px; }
-  .ws-roadHeaderActions .ws-btn { padding-left: 6px; padding-right: 6px; font-size: 12px; }
+  .ws-topbar { padding: 4px 4px 8px; gap: 8px; }
+  .ws-topbar > div:last-child .ws-btn { padding-left: 6px; padding-right: 6px; font-size: 12px; }
   .ws-roadProgressTop .ws-cardTitle { font-size: 13px; }
   .ws-roadHint { font-size: 11px; }
   .ws-stageCard { padding: 8px 6px; }
@@ -1354,18 +1395,7 @@ body {
   min-width: 0;
 }
 
-.ws-storeHeader {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 12px;
-  padding: 8px 0 12px;
-}
-
-.ws-storeHeader .ws-title {
-  margin: 0;
-}
+/* ws-storeHeader is now using ws-topbar - styles removed */
 
 .ws-storeBalance {
   display: inline-flex;
@@ -1604,10 +1634,7 @@ body {
 }
 
 @media (max-width: 360px) {
-  .ws-storeHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  /* ws-storeHeader styles moved to ws-topbar above */
   .ws-storeGrid {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
@@ -1627,13 +1654,7 @@ body {
   margin-top: 12px;
 }
 
-.ws-practiceHeader {
-  margin-bottom: 14px;
-}
-
-.ws-practiceHeader .ws-title {
-  margin: 0;
-}
+/* ws-practiceHeader is now using ws-topbar - styles removed */
 
 .ws-practiceGrid {
   display: grid;

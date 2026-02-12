@@ -98,7 +98,7 @@ export default function RoadmapView() {
   return (
     <div className="ws-roadmap">
       {/* Header */}
-      <header className="ws-roadHeader">
+      <div className="ws-topbar" style={{ paddingLeft: 6, paddingRight: 6 }}>
         <div>
           <h1 className="ws-title">Roadmap</h1>
           <div className="ws-sub">
@@ -109,7 +109,7 @@ export default function RoadmapView() {
           </div>
         </div>
 
-        <div className="ws-roadHeaderActions">
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button
             className="ws-btn ws-btn-outline ws-btn-sm"
             type="button"
@@ -133,7 +133,7 @@ export default function RoadmapView() {
             Collapse
           </button>
         </div>
-      </header>
+      </div>
 
       {/* Progress bar */}
       <section className="ws-card ws-roadProgress">

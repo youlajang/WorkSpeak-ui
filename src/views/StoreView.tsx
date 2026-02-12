@@ -157,7 +157,7 @@ function StoreViewWithContext() {
       </aside>
 
       <div className="ws-storeMain">
-        <div className="ws-storeHeader">
+        <div className="ws-topbar" style={{ paddingLeft: 6, paddingRight: 6 }}>
           <div>
             <h1 className="ws-title">Store</h1>
             <div className="ws-sub">Spend points to customize your avatar and room.</div>

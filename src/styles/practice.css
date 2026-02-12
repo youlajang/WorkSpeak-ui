@@ -1,0 +1,600 @@
+/* src/styles/practice.css */
+/* Practice Hub styles - using ws-* system from index.css */
+
+.pPage {
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 6px;
+}
+
+/* Hero (TODAY) */
+.pHero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--line));
+  margin-bottom: 16px;
+  min-width: 0;
+  box-shadow: var(--shadow);
+  background:
+    radial-gradient(1200px 420px at 20% 10%, color-mix(in srgb, var(--hero-a) 35%, transparent), transparent 60%),
+    radial-gradient(900px 400px at 90% 20%, color-mix(in srgb, var(--hero-c) 30%, transparent), transparent 62%),
+    radial-gradient(800px 380px at 60% 100%, color-mix(in srgb, var(--hero-b) 25%, transparent), transparent 65%),
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 70%, transparent), var(--panel));
+  overflow: hidden;
+}
+
+.pHeroPrimary {
+  /* Same as .pHero - no special styling needed */
+}
+
+.pHeroLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.pHeroKicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pKNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  font-weight: 900;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.pKNumHero {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  background: color-mix(in srgb, var(--primary) 15%, var(--pill));
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--line));
+}
+
+.pHeroKickerText {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+}
+
+/* Kicker number for cards */
+.pKicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pKicker span:not(.pKNum) {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+}
+
+.pHeroTitleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.pHeroTitle {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--text);
+}
+
+.pScore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  font-weight: 800;
+  font-size: 13px;
+  color: color-mix(in srgb, var(--text) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+
+.pHeroDesc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+  margin-bottom: 12px;
+}
+
+.pHeroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.pHeroRight {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+  min-width: 160px;
+}
+
+.pHeroRight .pBtnCTA {
+  width: 100%;
+  text-align: center;
+}
+
+/* Stack */
+.pStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Cards */
+.pCard {
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.pCardTop {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pCardTitleWrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.pKicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pTopRight {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Buttons are now using ws-btn system - no custom button styles needed */
+
+/* Pills & Chips - using ws-* system */
+
+/* Segment */
+.pSegment {
+  display: inline-flex;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  overflow: hidden;
+}
+
+.pSegBtn {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pSegBtn.isActive {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Weakness list */
+.pWeakList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pWeakItem {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 95%, transparent);
+}
+
+.pWeakMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.pWeakRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.pWeakName {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.pBadge {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pBadge.tone-danger {
+  background: color-mix(in srgb, #ef4444 20%, transparent);
+  color: #ef4444;
+}
+
+.pBadge.tone-warn {
+  background: color-mix(in srgb, var(--warn) 20%, transparent);
+  color: var(--warn);
+}
+
+.pBadge.tone-ok {
+  background: color-mix(in srgb, var(--hero-b) 20%, transparent);
+  color: var(--hero-b);
+}
+
+.pWeakHint {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.pBar {
+  margin-top: 10px;
+}
+
+.pBarTrack {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--pill);
+  overflow: hidden;
+}
+
+.pBarFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.3s;
+}
+
+.pBarLabel {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.pWeakActions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+/* Two column */
+.pTwoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pPanel {
+  min-width: 0;
+}
+
+.pPanelTitle {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.pPanelDesc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.pFormRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.pField {
+  min-width: 0;
+}
+
+.pLabel {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.pSelectWrap {
+  position: relative;
+}
+
+.pSelect {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.pPresetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pPresetBtn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pPresetBtn:hover {
+  background: color-mix(in srgb, var(--pill) 120%, transparent);
+}
+
+.pPresetBtn.isActive {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.pExamMini {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+}
+
+.pExamMiniTitle {
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.pExamChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+/* Progress */
+.pProgressTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pProgressTitle {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.pProgressPct {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.pProgressTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--pill);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.pProgressFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.3s;
+}
+
+.pNextCard {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pNextCard:hover {
+  background: color-mix(in srgb, var(--pill) 120%, transparent);
+  border-color: var(--primary);
+}
+
+.pNextTag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.pNextTitle {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.pNextDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.pNextHint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Work grid */
+.pWorkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.pWorkCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 95%, transparent);
+}
+
+.pWorkTop {
+  min-width: 0;
+}
+
+.pWorkTitle {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.pWorkSub {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.pWorkChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pWorkBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Empty state */
+.pEmpty {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.pEmptyTitle {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.pEmptyDesc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .pTwoCol {
+    grid-template-columns: 1fr;
+  }
+  .pWorkGrid {
+    grid-template-columns: 1fr;
+  }
+  .pWeakItem {
+    flex-direction: column;
+  }
+  .pWeakActions {
+    flex-direction: row;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .pHeader {
+    flex-direction: column;
+  }
+  .pHero {
+    flex-direction: column;
+  }
+  .pHeroRight {
+    width: 100%;
+  }
+  .pBtnCTA {
+    width: 100%;
+  }
+}

@@ -263,8 +263,8 @@ export default function HomeView() {
 
         <div className="ws-topbarRight">
           <div className="ws-kpis" aria-label="Key progress indicators">
-            <Kpi icon="🔥" label="연속 학습" value={`${user.streakDays}일`} />
-            <Kpi icon="💎" label="포인트" value={user.points.toLocaleString()} />
+            <Kpi icon="🔥" label="Streak" value={`${user.streakDays}d`} />
+            <Kpi icon="💎" label="Points" value={user.points.toLocaleString()} />
             <Kpi icon="⭐" label="XP" value={user.xp.toLocaleString()} />
           </div>
         </div>
@@ -335,7 +335,7 @@ export default function HomeView() {
             <div className="ws-heroSide">
               <div className="ws-heroSideCard">
                 <div className="ws-heroSideTitle">Next on your path</div>
-                <div className="ws-heroSideSub">Path에서 다음 세션이 아래로 이어져요.</div>
+                <div className="ws-heroSideSub">The next session continues below in your path.</div>
 
                 <div className="ws-miniStat">
                   <span className="ws-miniLabel">Next</span>
@@ -363,12 +363,12 @@ export default function HomeView() {
               <div>
                 <div className="ws-cardTitle">Learning path</div>
                 <div className="ws-sub">
-                  세션이 15개 이상 아래로 이어져요. 상세보기에서 Run/Quick Review/Quest를 펼치세요.
+                  Sessions continue below (15+). Expand Run/Quick Review/Quest in details.
                 </div>
               </div>
 
               <button
-                className="ws-btn ws-btn-outline ws-btn-sm"
+                className="ws-btn ws-btn-utility"
                 onClick={() => setShowRoadmap(true)}
                 type="button"
               >
@@ -405,12 +405,12 @@ export default function HomeView() {
                         </div>
 
                         <button
-                          className="ws-mapDetailBtn"
+                          className="ws-btn ws-btn-secondary ws-btn-sm"
                           onClick={() => setExpandedId(isExpanded ? null : node.id)}
                           type="button"
                           disabled={node.status === "locked"}
                         >
-                          {isExpanded ? "접기" : "상세보기"}
+                          {isExpanded ? "Collapse" : "Details"}
                         </button>
                       </div>
 
@@ -456,11 +456,11 @@ export default function HomeView() {
         <aside className="ws-right">
           <section className="ws-card" aria-label="Streak">
             <div className="ws-cardTitleRow">
-              <div className="ws-cardTitle">Streak · 연속 학습</div>
-              <div className="ws-pill">🔥 {user.streakDays}일</div>
+              <div className="ws-cardTitle">Streak</div>
+              <div className="ws-pill">🔥 {user.streakDays}d</div>
             </div>
-            <div className="ws-sub">오늘 Session 1개만 완료하면 유지돼요.</div>
-            <button className="ws-btn ws-btn-outline" type="button">
+            <div className="ws-sub">Complete 1 session today to maintain your streak.</div>
+            <button className="ws-btn ws-btn-secondary ws-btn-sm" type="button">
               Go to Items
             </button>
           </section>
@@ -472,11 +472,11 @@ export default function HomeView() {
                 See all
               </button>
             </div>
-            <div className="ws-sub">XP 기반 리더보드</div>
+            <div className="ws-sub">XP-based leaderboard</div>
 
             <div className="ws-rankOnly">
-              <div className="ws-rankBig">{user.myRank.toLocaleString()}위</div>
-              <div className="ws-mutedSmall">현재 내 등수</div>
+              <div className="ws-rankBig">#{user.myRank.toLocaleString()}</div>
+              <div className="ws-mutedSmall">Your current rank</div>
             </div>
 
             <div className="ws-leaderList" style={{ marginTop: 12 }}>
@@ -499,28 +499,28 @@ export default function HomeView() {
             </div>
 
             <div className="ws-sub">
-              퀘스트 결과에 따라 승급/강등돼요. (메인에서 현재 레벨이 보여야 함)
+              Promotion/demotion based on quest results. (Current level should be visible on main)
             </div>
 
             <div className="ws-levelReason">
               <span className="ws-levelTag">Reason</span>
               <span className="ws-mutedSmall">
-                최근 퀘스트 성과가 기준 이상 → 승급 / 기준 미달 → 강등
+                Recent quest performance above threshold → promotion / below threshold → demotion
               </span>
             </div>
 
-            <button className="ws-btn ws-btn-outline" type="button">
+            <button className="ws-btn ws-btn-tertiary ws-btn-sm" type="button">
               See details
             </button>
           </section>
 
           <section className="ws-card" aria-label="Points">
             <div className="ws-cardTitleRow">
-              <div className="ws-cardTitle">Points · 포인트</div>
+              <div className="ws-cardTitle">Points</div>
               <div className="ws-pill">💎 {user.points.toLocaleString()}</div>
             </div>
-            <div className="ws-sub">상점에서 아이템/쿠폰 구매에 사용해요.</div>
-            <button className="ws-btn ws-btn-outline" type="button" onClick={() => nav("/store")}>
+            <div className="ws-sub">Use in store to purchase items/coupons.</div>
+            <button className="ws-btn ws-btn-tertiary ws-btn-sm" type="button" onClick={() => nav("/store")}>
               Go to Store
             </button>
           </section>
