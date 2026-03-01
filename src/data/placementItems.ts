@@ -106,7 +106,7 @@ export function getVocabBandFromSelection(selectedIds: string[]): number {
 }
 
 /** From A12/B12/C12 selected words: any C12 → 2, any B12 → 1, else 0. */
-export function getVocabBandFromCEFR(selectedA: string[], selectedB: string[], selectedC: string[]): number {
+export function getVocabBandFromCEFR(_selectedA: string[], selectedB: string[], selectedC: string[]): number {
   if (selectedC.length > 0) return 2;
   if (selectedB.length > 0) return 1;
   return 0;
