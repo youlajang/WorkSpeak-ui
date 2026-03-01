@@ -1,324 +1,553 @@
 // src/views/StoreView.tsx
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useStoreOptional,
-  type StoreItem,
-  type StoreCategory,
-  type AvatarSlot,
-  type RoomSlot,
-} from "../context/StoreContext";
+import { useTranslation } from "react-i18next";
+import { useDialog } from "../context/DialogContext";
+import { useStoreOptional } from "../context/StoreContext";
+import "../styles/store.css";
 
-// Demo catalog: Avatar + Room items
-const STORE_ITEMS: StoreItem[] = [
-  // Avatar
-  { id: "av-hair-default", category: "avatar", name: "Basic hair", price: 0, icon: "👤", slot: "hair", rarity: "common" },
-  { id: "av-hair-1", category: "avatar", name: "Curly style", price: 80, icon: "🧑‍🦱", slot: "hair", rarity: "common" },
-  { id: "av-hair-2", category: "avatar", name: "Pony tail", price: 100, icon: "👩", slot: "hair", rarity: "rare" },
-  { id: "av-top-default", category: "avatar", name: "Basic top", price: 0, icon: "👕", slot: "top", rarity: "common" },
-  { id: "av-top-1", category: "avatar", name: "Blazer", price: 150, icon: "🤵", slot: "top", rarity: "rare" },
-  { id: "av-top-2", category: "avatar", name: "Hoodie", price: 120, icon: "🧥", slot: "top", rarity: "common" },
-  { id: "av-bottom-default", category: "avatar", name: "Basic bottom", price: 0, icon: "👖", slot: "bottom", rarity: "common" },
-  { id: "av-bottom-1", category: "avatar", name: "Smart pants", price: 130, icon: "👔", slot: "bottom", rarity: "rare" },
-  { id: "av-acc-1", category: "avatar", name: "Glasses", price: 90, icon: "👓", slot: "accessory", rarity: "common" },
-  { id: "av-acc-2", category: "avatar", name: "Headphones", price: 110, icon: "🎧", slot: "accessory", rarity: "rare" },
-  { id: "av-frame-1", category: "avatar", name: "Gold frame", price: 200, icon: "🖼️", slot: "frame", rarity: "epic" },
-  { id: "av-frame-2", category: "avatar", name: "Leaf frame", price: 140, icon: "🍃", slot: "frame", rarity: "rare" },
-  // Room
-  { id: "rm-wall-default", category: "room", name: "White wall", price: 0, icon: "⬜", slot: "wall", rarity: "common" },
-  { id: "rm-wall-1", category: "room", name: "Sky blue", price: 100, icon: "🩵", slot: "wall", rarity: "common" },
-  { id: "rm-wall-2", category: "room", name: "Warm beige", price: 120, icon: "🟫", slot: "wall", rarity: "rare" },
-  { id: "rm-floor-default", category: "room", name: "Basic floor", price: 0, icon: "▫️", slot: "floor", rarity: "common" },
-  { id: "rm-floor-1", category: "room", name: "Wood floor", price: 150, icon: "🪵", slot: "floor", rarity: "rare" },
-  { id: "rm-floor-2", category: "room", name: "Carpet", price: 130, icon: "🟤", slot: "floor", rarity: "common" },
-  { id: "rm-furn-1", category: "room", name: "Desk lamp", price: 80, icon: "🪔", slot: "furniture", rarity: "common" },
-  { id: "rm-furn-2", category: "room", name: "Bookshelf", price: 180, icon: "📚", slot: "furniture", rarity: "epic" },
-  { id: "rm-prop-1", category: "room", name: "Plant", price: 70, icon: "🪴", slot: "prop", rarity: "common" },
-  { id: "rm-prop-2", category: "room", name: "Poster", price: 95, icon: "🖼️", slot: "prop", rarity: "rare" },
-];
+type ItemType = "instant" | "session" | "permanent";
+type ItemCategory = "Utility" | "Booster" | "Practice" | "Track";
 
-const LOW_BALANCE_THRESHOLD = 100;
+type StoreItem = {
+  id: string;
+  type: ItemType;
+  category: ItemCategory;
+  title: string;
+  desc: string;
+  price: number;
+  badge?: string;
+  /** Translation key for badge (e.g. store.badgeBest). */
+  badgeKey?: string;
+  uses?: number;
+  usesLabel?: string;
+  /** Translation key for uses label (e.g. store.uses5). */
+  usesLabelKey?: string;
+  /** Session items can also be time-based (e.g. 1 month access). */
+  durationMonths?: number;
+  /** Unlocks this roadmap track when purchased (permanent). */
+  trackId?: string;
+};
 
-const ITEMS_BY_ID = Object.fromEntries(STORE_ITEMS.map((i) => [i.id, i]));
+type Owned = {
+  id: string;
+  purchasedAt: number;
+  readyCount?: number;
+  remainingUses?: number;
+  expiresAt?: number;
+  enabled?: boolean;
+};
 
-function StoreViewWithContext() {
-  const nav = useNavigate();
-  const store = useStoreOptional();
+const CREDITS_STORAGE_KEY = "ws-store-credits-owned";
 
-  const [tab, setTab] = useState<StoreCategory>("avatar");
-  const [confirmItem, setConfirmItem] = useState<StoreItem | null>(null);
-  const [equipItem, setEquipItem] = useState<StoreItem | null>(null);
+function fmt(n: number) {
+  return n.toLocaleString();
+}
 
-  const points = store?.points ?? 1250;
-  const canAfford = (price: number) => points >= price;
-  const isLowBalance = points < LOW_BALANCE_THRESHOLD;
+function addMonths(ts: number, months: number): number {
+  const d = new Date(ts);
+  d.setMonth(d.getMonth() + months);
+  return d.getTime();
+}
 
-  const items = useMemo(() => STORE_ITEMS.filter((i) => i.category === tab), [tab]);
-
-  const avatarPreviewSlots = useMemo(() => {
-    if (!store) return [];
-    const slots: (keyof typeof store.equippedAvatar)[] = ["hair", "top", "bottom", "accessory", "frame"];
-    return slots.map((slot) => {
-      const id = store.equippedAvatar[slot];
-      return id ? (ITEMS_BY_ID[id] ?? null) : null;
+function fmtDate(ts: number) {
+  try {
+    return new Date(ts).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
-  }, [store?.equippedAvatar]);
+  } catch {
+    return "—";
+  }
+}
 
-  const roomPreviewItems = useMemo(() => {
-    if (!store) return [];
-    return (["wall", "floor", "furniture", "prop"] as const)
-      .map((slot) => store.equippedRoom[slot])
-      .filter(Boolean)
-      .map((id) => ITEMS_BY_ID[id!])
-      .filter(Boolean) as StoreItem[];
-  }, [store?.equippedRoom]);
+function typeLabel(itemType: ItemType, tFn: (key: string) => string) {
+  if (itemType === "instant") return tFn("store.useOnce");
+  if (itemType === "session") return tFn("store.session");
+  return tFn("store.unlockForever");
+}
 
-  const handlePurchase = (item: StoreItem) => {
-    if (!store) return;
-    if (item.price === 0 && item.slot) {
-      if (item.category === "avatar") store.equipAvatar(item.slot as AvatarSlot, item.id);
-      else store.equipRoom(item.slot as RoomSlot, item.id);
+function typeIcon(t: ItemType) {
+  if (t === "instant") return "⚡";
+  if (t === "session") return "🔄";
+  return "🔓";
+}
+
+function typeTooltipKey(t: ItemType): string {
+  if (t === "instant") return "store.typeTooltipInstant";
+  if (t === "session") return "store.typeTooltipSession";
+  return "store.typeTooltipPermanent";
+}
+
+function pillClass(t: ItemType) {
+  if (t === "instant") return "wsPill wsPillInstant";
+  if (t === "session") return "wsPill wsPillSession";
+  return "wsPill wsPillPermanent";
+}
+
+function loadOwned(): Record<string, Owned> {
+  try {
+    const raw = localStorage.getItem(CREDITS_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Record<string, Owned>;
+      return typeof parsed === "object" ? parsed : {};
+    }
+  } catch (_) {}
+  return {};
+}
+
+function saveOwned(owned: Record<string, Owned>) {
+  try {
+    localStorage.setItem(CREDITS_STORAGE_KEY, JSON.stringify(owned));
+  } catch (_) {}
+}
+
+export default function StoreView() {
+  const { t } = useTranslation();
+  const nav = useNavigate();
+  const dialog = useDialog();
+  const store = useStoreOptional();
+  const credits = store?.points ?? 1250;
+  const typeLabelT = (itemType: ItemType) => typeLabel(itemType, t);
+
+  const [owned, setOwned] = useState<Record<string, Owned>>(loadOwned);
+  const [toast, setToast] = useState<{ msg: string; kind: "ok" | "err" } | null>(null);
+
+  const items = useMemo<StoreItem[]>(
+    () => [
+      {
+        id: "instant_streak_shield",
+        type: "instant",
+        category: "Utility",
+        title: "",
+        desc: "",
+        price: 120,
+        badge: "Best",
+        badgeKey: "store.badgeBest",
+      },
+      {
+        id: "instant_fast_review",
+        type: "instant",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 90,
+      },
+      {
+        id: "instant_focus_mode",
+        type: "instant",
+        category: "Booster",
+        title: "",
+        desc: "",
+        price: 60,
+      },
+      {
+        id: "session_practice_plus_5",
+        type: "session",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 250,
+        uses: 5,
+        usesLabel: "",
+        usesLabelKey: "store.uses5",
+        badge: "Popular",
+        badgeKey: "store.badgePopular",
+      },
+      {
+        id: "session_practice_plus_1m",
+        type: "session",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 420,
+        durationMonths: 1,
+        usesLabel: "",
+        usesLabelKey: "store.uses1month",
+      },
+      {
+        id: "session_roleplay_pro_3",
+        type: "session",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 210,
+        uses: 3,
+        usesLabel: "",
+        usesLabelKey: "store.uses3",
+      },
+      {
+        id: "session_review_boost_7",
+        type: "session",
+        category: "Booster",
+        title: "",
+        desc: "",
+        price: 280,
+        uses: 7,
+        usesLabel: "",
+        usesLabelKey: "store.uses7",
+      },
+      {
+        id: "perm_cafe_track",
+        type: "permanent",
+        category: "Track",
+        title: "",
+        desc: "",
+        price: 640,
+        trackId: "cafe",
+      },
+      {
+        id: "perm_medical_sim",
+        type: "permanent",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 980,
+        badge: "Pro",
+        badgeKey: "store.badgePro",
+        trackId: "medical",
+      },
+      {
+        id: "perm_interview_master",
+        type: "permanent",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 860,
+        trackId: "interview",
+      },
+      {
+        id: "perm_report_filters",
+        type: "permanent",
+        category: "Utility",
+        title: "",
+        desc: "",
+        price: 720,
+      },
+      {
+        id: "perm_test_area",
+        type: "permanent",
+        category: "Practice",
+        title: "",
+        desc: "",
+        price: 500,
+      },
+    ],
+    []
+  );
+
+  type FilterType = ItemType | "all";
+  const [typeFilter, setTypeFilter] = useState<FilterType>("all");
+
+  const filteredItems = useMemo(() => {
+    if (typeFilter === "all") return items;
+    return items.filter((x) => x.type === typeFilter);
+  }, [items, typeFilter]);
+
+  function notify(msg: string, kind: "ok" | "err" = "ok") {
+    setToast({ msg, kind });
+    window.setTimeout(() => setToast(null), 1800);
+  }
+
+  async function buy(item: StoreItem) {
+    const o = owned[item.id];
+    const now = Date.now();
+
+    if (item.type === "permanent" && o?.enabled) {
+      notify("Already unlocked.", "err");
       return;
     }
-    if (store.isOwned(item.id)) {
-      setEquipItem(item);
+    if (item.type === "instant" && (o?.readyCount ?? 0) > 0) {
+      notify("You still have uses left. Use it from Practice first.", "err");
       return;
     }
-    if (!canAfford(item.price)) return;
-    setConfirmItem(item);
-  };
+    if (item.type === "session") {
+      const isTimeBased = typeof item.durationMonths === "number" && item.durationMonths > 0;
+      const activeByUses = (o?.remainingUses ?? 0) > 0;
+      const activeByTime = (o?.expiresAt ?? 0) > now;
+      const sessionActive = isTimeBased ? activeByTime : activeByUses;
+      if (sessionActive) {
+        notify("Already active. Buy again after it ends.", "err");
+        return;
+      }
+    }
+    if (credits < item.price) {
+      notify("Not enough credits.", "err");
+      return;
+    }
 
-  const confirmPurchase = () => {
-    if (!confirmItem || !store) return;
-    const ok = store.purchaseItem(confirmItem.id, confirmItem.price);
-    if (ok) {
-      setConfirmItem(null);
-      setEquipItem(confirmItem);
-    }
-  };
+    const ok = await dialog.confirm(
+      `Use ${fmt(item.price)} credits to buy "${t(`store.item_${item.id}_title`)}"?`
+    );
+    if (!ok) return;
 
-  const doEquip = (item: StoreItem) => {
-    if (!store) return;
-    if (item.category === "avatar" && item.slot) {
-      store.equipAvatar(item.slot as AvatarSlot, item.id);
+    const spent = store?.spendPoints(item.price);
+    if (store && !spent) {
+      notify("Not enough credits.", "err");
+      return;
     }
-    if (item.category === "room" && item.slot) {
-      store.equipRoom(item.slot as RoomSlot, item.id);
-    }
-    setEquipItem(null);
-  };
 
-  const doUnequip = (item: StoreItem) => {
-    if (!store) return;
-    if (item.category === "avatar" && item.slot) {
-      store.equipAvatar(item.slot as AvatarSlot, null);
+    setOwned((prev) => {
+      const next = { ...prev };
+      const now = Date.now();
+
+      if (item.type === "instant") {
+        const prevCount = next[item.id]?.readyCount ?? 0;
+        next[item.id] = {
+          id: item.id,
+          purchasedAt: now,
+          readyCount: prevCount + 1,
+        };
+      } else if (item.type === "session") {
+        const isTimeBased = typeof item.durationMonths === "number" && item.durationMonths > 0;
+        if (isTimeBased) {
+          next[item.id] = {
+            id: item.id,
+            purchasedAt: now,
+            expiresAt: addMonths(now, item.durationMonths ?? 1),
+          };
+        } else {
+          next[item.id] = {
+            id: item.id,
+            purchasedAt: now,
+            remainingUses: item.uses ?? 5,
+          };
+        }
+      } else {
+        next[item.id] = {
+          id: item.id,
+          purchasedAt: now,
+          enabled: true,
+        };
+      }
+
+      saveOwned(next);
+      return next;
+    });
+
+    notify(`Purchased: ${t(`store.item_${item.id}_title`)}`, "ok");
+  }
+
+  function useNow(item: StoreItem) {
+    const o = owned[item.id];
+    if (!o) return;
+
+    if (item.type === "instant") {
+      const n = o.readyCount ?? 0;
+      if (n <= 0) return notify("No uses left.", "err");
+      setOwned((prev) => {
+        const next = {
+          ...prev,
+          [item.id]: { ...prev[item.id], readyCount: n - 1 },
+        };
+        saveOwned(next);
+        return next;
+      });
+      nav("/practice");
     }
-    if (item.category === "room" && item.slot) {
-      store.equipRoom(item.slot as RoomSlot, null);
+
+    if (item.type === "session") {
+      const isTimeBased = typeof item.durationMonths === "number" && item.durationMonths > 0;
+      if (isTimeBased) return notify("This is time-based access (no Use button).", "err");
+      const n = o.remainingUses ?? 0;
+      if (n <= 0) return notify("No uses left.", "err");
+      setOwned((prev) => {
+        const next = {
+          ...prev,
+          [item.id]: { ...prev[item.id], remainingUses: n - 1 },
+        };
+        saveOwned(next);
+        return next;
+      });
+      return notify("Applied to this session! (demo)", "ok");
     }
-    setEquipItem(null);
-  };
+
+    notify("Permanent items don't have a Use button.", "err");
+  }
+
+  if (!store) {
+    return (
+      <div className="wsStoreWrap">
+        <header className="ws-topbar">
+          <div className="ws-topbarLeft">
+            <h1 className="ws-title">{t("store.title")}</h1>
+            <div className="ws-sub">Store requires app context. Use StoreProvider in App.</div>
+          </div>
+        </header>
+      </div>
+    );
+  }
 
   return (
-    <section className="ws-storePage">
-      <aside className="ws-storePreview">
-        <div className="ws-storePreviewCard ws-storePreviewCharacter">
-          <div className="ws-storePreviewTitle">My character</div>
-          <div className="ws-storePreviewCharacterBody">
-            {avatarPreviewSlots.every((x) => !x) ? (
-              <span className="ws-storePreviewEmpty">No items equipped</span>
-            ) : (
-              avatarPreviewSlots.map((item, i) => (
-                <span
-                  key={item?.id ?? `slot-${i}`}
-                  className={`ws-storePreviewCharacterPart ${item ? "" : "is-empty"}`}
-                  title={item?.name}
-                >
-                  {item ? item.icon : "—"}
-                </span>
-              ))
-            )}
-          </div>
+    <div className="wsStoreWrap">
+      <header className="ws-topbar">
+        <div className="ws-topbarLeft">
+          <h1 className="ws-title">{t("store.title")}</h1>
+          <div className="ws-sub">{t("store.subtitleShort")}</div>
         </div>
-        <div className="ws-storePreviewCard">
-          <div className="ws-storePreviewTitle">My room</div>
-          <div className="ws-storePreviewIcons">
-            {roomPreviewItems.length === 0 ? (
-              <span className="ws-storePreviewEmpty">No items equipped</span>
-            ) : (
-              roomPreviewItems.map((item) => (
-                <span key={item.id} className="ws-storePreviewIcon" title={item.name}>
-                  {item.icon}
-                </span>
-              ))
-            )}
-          </div>
-        </div>
-      </aside>
-
-      <div className="ws-storeMain">
-        <div className="ws-topbar" style={{ paddingLeft: 6, paddingRight: 6 }}>
-          <div>
-            <h1 className="ws-title">Store</h1>
-            <div className="ws-sub">Spend points to customize your avatar and room.</div>
-          </div>
-          <div className="ws-storeBalance">
-            <span className="ws-storeBalanceIcon">💎</span>
-            <span className="ws-storeBalanceValue">{points.toLocaleString()} P</span>
-          </div>
-        </div>
-
-        <div className="ws-storeTabs">
-        <button
-          type="button"
-          className={`ws-storeTab ${tab === "avatar" ? "is-active" : ""}`}
-          onClick={() => setTab("avatar")}
-        >
-          Avatar
-        </button>
-        <button
-          type="button"
-          className={`ws-storeTab ${tab === "room" ? "is-active" : ""}`}
-          onClick={() => setTab("room")}
-        >
-          Room
-        </button>
-      </div>
-
-      <div className="ws-storeGrid">
-        {items.map((item) => {
-          const owned = store?.isOwned(item.id) ?? item.price === 0;
-          const equipped = store?.isEquipped(item.id, item.category) ?? false;
-          const affordable = canAfford(item.price);
-
-          return (
-            <div
-              key={item.id}
-              className={`ws-storeCard ${item.rarity ?? "common"} ${equipped ? "is-equipped" : ""}`}
-            >
-              <div className="ws-storeCardIcon">{item.icon}</div>
-              <div className="ws-storeCardName">{item.name}</div>
-              <div className="ws-storeCardPrice">
-                {item.price === 0 ? "Free" : `💎 ${item.price} P`}
-              </div>
-              <div className="ws-storeCardActions">
-                {item.price > 0 && !owned && (
-                  <button
-                    type="button"
-                    className="ws-btn ws-btn-sm ws-btn-primary"
-                    disabled={!affordable}
-                    onClick={() => handlePurchase(item)}
-                  >
-                    {affordable ? "Buy" : "Not enough P"}
-                  </button>
-                )}
-                {owned && (
-                  <>
-                    {equipped ? (
-                      <span className="ws-storeCardEquipped">Equipped</span>
-                    ) : (
-                      <button
-                        type="button"
-                        className="ws-btn ws-btn-sm ws-btn-outline"
-                        onClick={() => setEquipItem(item)}
-                      >
-                        Equip
-                      </button>
-                    )}
-                  </>
-                )}
-                {item.price === 0 && (
-                  <button
-                    type="button"
-                    className="ws-btn ws-btn-sm ws-btn-outline"
-                    onClick={() => handlePurchase(item)}
-                  >
-                    Use
-                  </button>
-                )}
+        <div className="ws-topbarRight">
+          <div className="ws-kpis" aria-label={t("store.credits")}>
+            <div className="ws-kpi">
+              <div className="ws-kpiIcon">💎</div>
+              <div className="ws-kpiText">
+                <div className="ws-kpiLabel">{t("store.credits")}</div>
+                <div className="ws-kpiValue">{fmt(credits)}</div>
               </div>
             </div>
+          </div>
+        </div>
+      </header>
+
+      <section className="ws-card wsStoreIntro" aria-label="Credits store">
+        <div className="ws-heroEyebrow">{t("store.creditsStore")}</div>
+        <div className="ws-cardTitle" style={{ marginTop: 4 }}>{t("store.introHeading")}</div>
+        <div className="ws-sub">{t("store.intro")}</div>
+        <div className="ws-heroMeta" style={{ marginTop: 10 }}>
+          <span className="ws-metaPill">
+            <span title={t(typeTooltipKey("instant"))}>⚡ {t("store.useOnce")}</span>
+            {" · "}
+            <span title={t(typeTooltipKey("session"))}>🔄 {t("store.session")}</span>
+            {" · "}
+            <span title={t(typeTooltipKey("permanent"))}>🔓 {t("store.unlockForever")}</span>
+          </span>
+        </div>
+        <div className="wsStoreIntroHow">
+          {t("store.howItWorks")}
+        </div>
+      </section>
+
+      <div className="wsStoreFilter">
+        <span className="wsStoreFilterLabel">{t("store.filterLabel")}</span>
+        {(["all", "instant", "session", "permanent"] as const).map((key) => (
+          <button
+            key={key}
+            type="button"
+            className={"wsStoreFilterBtn " + (typeFilter === key ? "isActive" : "")}
+            onClick={() => setTypeFilter(key)}
+            title={key === "all" ? undefined : t(typeTooltipKey(key as ItemType))}
+          >
+            {key === "all" ? t("store.all") : typeLabelT(key as ItemType)}
+          </button>
+        ))}
+      </div>
+
+      <div className="wsGrid">
+        {filteredItems.map((it) => {
+          const o = owned[it.id];
+          const now = Date.now();
+          const isSessionTimeBased =
+            it.type === "session" && typeof it.durationMonths === "number" && it.durationMonths > 0;
+          const sessionActiveByUses = (o?.remainingUses ?? 0) > 0;
+          const sessionActiveByTime = (o?.expiresAt ?? 0) > now;
+          const sessionActive =
+            it.type === "session"
+              ? (isSessionTimeBased ? sessionActiveByTime : sessionActiveByUses)
+              : false;
+
+          const isOwned =
+            it.type === "permanent"
+              ? Boolean(o?.enabled)
+              : it.type === "instant"
+                ? Boolean(o)
+                : it.type === "session"
+                  ? sessionActive
+                  : false;
+          const instantReady = o?.readyCount ?? 0;
+          const ownedTag =
+            it.type === "permanent" && o?.enabled
+              ? t("store.ownedTagPurchased")
+              : it.type === "instant" && o
+                ? instantReady > 0
+                  ? t("store.ownedTagReady", { count: instantReady })
+                  : t("store.ownedTagZeroLeft")
+                : it.type === "session" && o
+                  ? isSessionTimeBased
+                    ? sessionActiveByTime
+                      ? t("store.ownedTagActiveUntil", { date: fmtDate(o.expiresAt ?? 0) })
+                      : t("store.ownedTagExpired")
+                    : t("store.ownedTagLeft", { count: o.remainingUses ?? 0 })
+                  : null;
+
+          const showBuy =
+            it.type === "permanent"
+              ? !Boolean(o?.enabled)
+              : it.type === "instant"
+                ? instantReady <= 0
+                : it.type === "session"
+                  ? !sessionActive
+                  : true;
+
+          const canUse =
+            it.type === "instant"
+              ? (o?.readyCount ?? 0) > 0
+              : it.type === "session"
+                ? !isSessionTimeBased && (o?.remainingUses ?? 0) > 0
+                : false;
+
+          const itemTitle = t(`store.item_${it.id}_title`);
+          const itemDesc = t(`store.item_${it.id}_desc`);
+          return (
+            <section
+              key={it.id}
+              className={`ws-card wsCard wsCard--${it.type}${isOwned ? " wsCard-isOwned" : ""}`}
+              aria-label={itemTitle}
+            >
+              <div className="wsCardTop">
+                <span className={pillClass(it.type)} title={t(typeTooltipKey(it.type))}>
+                  <span className="wsPillIcon" aria-hidden>{typeIcon(it.type)}</span>
+                  {typeLabelT(it.type)}
+                </span>
+                <div className="wsCardTopRight">
+                  {it.badgeKey && <span className="wsBadge">{t(it.badgeKey)}</span>}
+                  {(it.usesLabelKey || it.usesLabel) && (
+                    <span className="wsMiniTag">{it.usesLabelKey ? t(it.usesLabelKey) : it.usesLabel}</span>
+                  )}
+                </div>
+              </div>
+              <div className="ws-cardTitleRow" style={{ marginBottom: 0 }}>
+                <h3 className="ws-cardTitle wsCardTitle">{itemTitle}</h3>
+              </div>
+              <div className="ws-sub wsCardDesc">{itemDesc}</div>
+              <div className="wsCardFoot">
+                <div className="wsPrice">
+                  <span className="wsPriceIcon" aria-hidden>💎</span>
+                  <b>{fmt(it.price)}</b>
+                </div>
+                <div className="wsActions">
+                  {ownedTag && <span className="wsOwnedTag">{ownedTag}</span>}
+                  {showBuy && (
+                    <button
+                      type="button"
+                      className={"ws-btn ws-btn-sm ws-btn-secondary"}
+                      onClick={() => buy(it)}
+                    >
+                      Buy
+                    </button>
+                  )}
+                  {(it.type === "instant" || (it.type === "session" && !isSessionTimeBased)) && (
+                    <button
+                      type="button"
+                      className={"ws-btn ws-btn-sm ws-btn-tertiary " + (!canUse ? "ws-btn-disabled" : "")}
+                      onClick={() => useNow(it)}
+                      disabled={!canUse}
+                      title={!canUse ? "No uses left" : "Use now (demo)"}
+                    >
+                      Use
+                    </button>
+                  )}
+                </div>
+              </div>
+            </section>
           );
         })}
       </div>
 
-      {isLowBalance && (
-        <section className="ws-storeCta">
-          <div className="ws-storeCtaTitle">Need more points?</div>
-          <div className="ws-storeCtaSub">Practice to earn more and come back to the store.</div>
-          <div className="ws-storeCtaActions">
-            <button type="button" className="ws-btn ws-btn-primary" onClick={() => nav("/practice")}>
-              Practice
-            </button>
-            <button type="button" className="ws-btn ws-btn-outline" onClick={() => nav("/")}>
-              Home
-            </button>
-          </div>
-        </section>
-      )}
-      </div>
-
-      {confirmItem && (
-        <div className="ws-storeOverlay" role="dialog" aria-modal="true" aria-labelledby="store-confirm-title">
-          <div className="ws-storeModal">
-            <h2 id="store-confirm-title" className="ws-storeModalTitle">Confirm purchase</h2>
-            <div className="ws-storeModalBody">
-              <span className="ws-storeModalIcon">{confirmItem.icon}</span>
-              <span>{confirmItem.name}</span>
-              <span className="ws-storeModalPrice">💎 {confirmItem.price} P</span>
-            </div>
-            <div className="ws-storeModalActions">
-              <button type="button" className="ws-btn ws-btn-outline" onClick={() => setConfirmItem(null)}>
-                Cancel
-              </button>
-              <button type="button" className="ws-btn ws-btn-primary" onClick={confirmPurchase}>
-                Buy
-              </button>
-            </div>
-          </div>
+      {toast && (
+        <div className={"wsToast " + (toast.kind === "err" ? "wsToastErr" : "wsToastOk")}>
+          {toast.msg}
         </div>
       )}
-
-      {equipItem && store && (
-        <div className="ws-storeOverlay" role="dialog" aria-modal="true" aria-labelledby="store-equip-title">
-          <div className="ws-storeModal">
-            <h2 id="store-equip-title" className="ws-storeModalTitle">Equip item</h2>
-            <div className="ws-storeModalBody">
-              <span className="ws-storeModalIcon">{equipItem.icon}</span>
-              <span>{equipItem.name}</span>
-            </div>
-            <div className="ws-storeModalActions">
-              {store.isEquipped(equipItem.id, equipItem.category) ? (
-                <button type="button" className="ws-btn ws-btn-outline" onClick={() => doUnequip(equipItem)}>
-                  Unequip
-                </button>
-              ) : (
-                <button type="button" className="ws-btn ws-btn-primary" onClick={() => doEquip(equipItem)}>
-                  Equip
-                </button>
-              )}
-              <button type="button" className="ws-btn ws-btn-outline" onClick={() => setEquipItem(null)}>
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+    </div>
   );
-}
-
-export default function StoreView() {
-  const store = useStoreOptional();
-  if (!store) {
-    return (
-      <section className="ws-storePage">
-        <div className="ws-storeHeader">
-          <h1 className="ws-title">Store</h1>
-          <div className="ws-sub">Store requires app context. Use StoreProvider in App.</div>
-        </div>
-      </section>
-    );
-  }
-  return <StoreViewWithContext />;
 }

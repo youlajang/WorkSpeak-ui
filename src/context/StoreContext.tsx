@@ -1,5 +1,6 @@
 // src/context/StoreContext.tsx
 import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { flushSync } from "react-dom";
 
 const STORAGE_KEY = "ws-store";
 
@@ -30,7 +31,7 @@ type StoredState = {
 };
 
 const defaultState: StoredState = {
-  points: 1250,
+  points: 2000,
   ownedItemIds: [],
   equippedAvatar: {},
   equippedRoom: {},
@@ -41,8 +42,9 @@ function loadState(): StoredState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as StoredState;
+      const points = typeof parsed.points === "number" ? parsed.points : defaultState.points;
       return {
-        points: typeof parsed.points === "number" ? parsed.points : defaultState.points,
+        points: Math.max(points, 2000),
         ownedItemIds: Array.isArray(parsed.ownedItemIds) ? parsed.ownedItemIds : defaultState.ownedItemIds,
         equippedAvatar: parsed.equippedAvatar && typeof parsed.equippedAvatar === "object" ? parsed.equippedAvatar : defaultState.equippedAvatar,
         equippedRoom: parsed.equippedRoom && typeof parsed.equippedRoom === "object" ? parsed.equippedRoom : defaultState.equippedRoom,
@@ -87,12 +89,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const spendPoints = useCallback((amount: number): boolean => {
     let ok = false;
-    setState((prev) => {
-      if (prev.points < amount) return prev;
-      ok = true;
-      const next = { ...prev, points: prev.points - amount };
-      saveState(next);
-      return next;
+    flushSync(() => {
+      setState((prev) => {
+        if (prev.points < amount) return prev;
+        ok = true;
+        const next = { ...prev, points: prev.points - amount };
+        saveState(next);
+        return next;
+      });
     });
     return ok;
   }, []);

@@ -1,6 +1,7 @@
 // src/views/ReportDetailView.tsx
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type ReportKind = "quest" | "level_test";
 type LevelChange = "promoted" | "demoted" | "same" | "none";
@@ -30,8 +31,12 @@ type Report = {
   levelChange?: LevelChange;
 
   summary?: string;
+  /** When set, summary is shown via t(summaryKey). */
+  summaryKey?: string;
   strengths?: string[];
+  strengthsKeys?: string[];
   improvements?: string[];
+  improvementsKeys?: string[];
 
   breakdown?: {
     empathy: number;
@@ -44,6 +49,11 @@ type Report = {
     tone: string[];
     clarity: string[];
   };
+  /** When set, toneAnalysis content is shown via t() for each key. */
+  toneAnalysisKeys?: {
+    tone: string[];
+    clarity: string[];
+  };
 
   transcript?: TranscriptItem[];
 
@@ -51,6 +61,8 @@ type Report = {
     type: NextStepType;
     title: string;
     description: string;
+    titleKey?: string;
+    descriptionKey?: string;
     ctaLabel: string;
     to: string;
   };
@@ -95,19 +107,14 @@ function useDemoReports(): Report[] {
         xpEarned: 30,
         pointsEarned: 150,
         levelChange: "same",
-        summary: "Good policy framing. Add more empathy before constraints.",
-        strengths: ["Clear policy framing", "Correct escalation steps", "Good tone"],
-        improvements: ["Add empathy line first", "Offer 1 alternative earlier"],
+        summaryKey: "reportDetail.summary",
+        strengthsKeys: ["reportDetail.strength1", "reportDetail.strength2", "reportDetail.strength3"],
+        improvementsKeys: ["reportDetail.improve1", "reportDetail.improve2"],
         breakdown: { empathy: 68, clarity: 84, policy: 90, tone: 82 },
-        toneAnalysis: {
-          tone: [
-            "Tone is professional and calm overall.",
-            "Good de-escalation language when the customer threatens to complain.",
-          ],
-          clarity: [
-            "Options are clear, but add a short empathy line before stating constraints.",
-            "State the single next step first, then alternatives.",
-          ],
+        toneAnalysis: { tone: [], clarity: [] },
+        toneAnalysisKeys: {
+          tone: ["reportDetail.tone1", "reportDetail.tone2"],
+          clarity: ["reportDetail.clarity1", "reportDetail.clarity2"],
         },
         transcript: [
           {
@@ -132,7 +139,9 @@ function useDemoReports(): Report[] {
         ],
         nextStep: {
           type: "practice",
-          title: "Practice: Missing receipt flow",
+          title: "",
+          titleKey: "reportDetail.nextStepTitle",
+          descriptionKey: "reportDetail.nextStepDesc",
           description:
             "Repeat the ‘no receipt’ branch until you can respond in 1–2 calm sentences with empathy first.",
           ctaLabel: "Go practice",
@@ -145,6 +154,7 @@ function useDemoReports(): Report[] {
 }
 
 export default function ReportDetailView() {
+  const { t } = useTranslation();
   const nav = useNavigate();
   const { id } = useParams();
   const [showNeedsWorkOnly, setShowNeedsWorkOnly] = useState(false);
@@ -160,7 +170,7 @@ export default function ReportDetailView() {
             <button
               className="ws-btn ws-btn-outline ws-btn-sm"
               type="button"
-              onClick={() => nav("/reports")}
+              onClick={() => nav("/profile/reports")}
               style={{ height: 40, width: 44, padding: 0, borderRadius: 14, fontWeight: 900 }}
               aria-label="Back"
               title="Back"
@@ -198,7 +208,7 @@ export default function ReportDetailView() {
           <button
             className="ws-btn ws-btn-outline ws-btn-sm"
             type="button"
-            onClick={() => nav("/reports")}
+            onClick={() => nav("/profile/reports")}
             style={{ height: 40, width: 44, padding: 0, borderRadius: 14, fontWeight: 900 }}
             aria-label="Back"
             title="Back"
@@ -264,10 +274,10 @@ export default function ReportDetailView() {
           )}
         </div>
 
-        {report.summary && (
+        {(report.summaryKey || report.summary) && (
           <div style={{ marginTop: 12 }}>
             <div className="ws-rdSectionLabel">Summary</div>
-            <div className="ws-rdBodyText">{report.summary}</div>
+            <div className="ws-rdBodyText">{report.summaryKey ? t(report.summaryKey) : report.summary}</div>
           </div>
         )}
       </section>
@@ -307,7 +317,7 @@ export default function ReportDetailView() {
           )}
 
           <div className="ws-sub" style={{ marginTop: 10 }}>
-            Note: written answers only (no pronunciation/audio engine).
+            {t("reportDetail.noteWrittenOnly")}
           </div>
         </section>
 
@@ -321,10 +331,10 @@ export default function ReportDetailView() {
           <div className="ws-rdNotesGrid" style={{ marginTop: 10 }}>
             <div className="ws-rdNotesPanel">
               <div className="ws-rdNotesTitle">Strengths</div>
-              {report.strengths?.length ? (
+              {(report.strengthsKeys?.length || report.strengths?.length) ? (
                 <ul className="ws-rdList">
-                  {report.strengths.map((s, i) => (
-                    <li key={i}>{s}</li>
+                  {(report.strengthsKeys ?? report.strengths ?? []).map((s, i) => (
+                    <li key={i}>{report.strengthsKeys ? t(s) : s}</li>
                   ))}
                 </ul>
               ) : (
@@ -334,10 +344,10 @@ export default function ReportDetailView() {
 
             <div className="ws-rdNotesPanel">
               <div className="ws-rdNotesTitle">Improvements</div>
-              {report.improvements?.length ? (
+              {(report.improvementsKeys?.length || report.improvements?.length) ? (
                 <ul className="ws-rdList">
-                  {report.improvements.map((s, i) => (
-                    <li key={i}>{s}</li>
+                  {(report.improvementsKeys ?? report.improvements ?? []).map((s, i) => (
+                    <li key={i}>{report.improvementsKeys ? t(s) : s}</li>
                   ))}
                 </ul>
               ) : (
@@ -348,7 +358,7 @@ export default function ReportDetailView() {
 
           {report.toneAnalysis && (
             <div className="ws-sub" style={{ marginTop: 12 }}>
-              <b>Tone/Clarity tip:</b> Empathy first → one clear next step → alternatives.
+              <b>Tone/Clarity tip:</b> {t("reportDetail.toneClarityTip")}
             </div>
           )}
         </section>
@@ -366,8 +376,8 @@ export default function ReportDetailView() {
             <div className="ws-rdNotesPanel">
               <div className="ws-rdNotesTitle">Tone</div>
               <ul className="ws-rdList">
-                {report.toneAnalysis.tone.map((s, i) => (
-                  <li key={i}>{s}</li>
+                {(report.toneAnalysisKeys?.tone ?? report.toneAnalysis.tone).map((s, i) => (
+                  <li key={i}>{report.toneAnalysisKeys ? t(s) : s}</li>
                 ))}
               </ul>
             </div>
@@ -375,8 +385,8 @@ export default function ReportDetailView() {
             <div className="ws-rdNotesPanel">
               <div className="ws-rdNotesTitle">Clarity</div>
               <ul className="ws-rdList">
-                {report.toneAnalysis.clarity.map((s, i) => (
-                  <li key={i}>{s}</li>
+                {(report.toneAnalysisKeys?.clarity ?? report.toneAnalysis.clarity).map((s, i) => (
+                  <li key={i}>{report.toneAnalysisKeys ? t(s) : s}</li>
                 ))}
               </ul>
             </div>
@@ -430,7 +440,7 @@ export default function ReportDetailView() {
                     <div className="ws-rdQaText">{t.a}</div>
                   </div>
 
-                  {/* ✅ Fix guidance (구분 확실히) */}
+                  {/* Fix guidance (clearly separated) */}
                   {hasFix && (
                     <div className="ws-rdFixWrap">
                       {(t.issue || t.suggestion) && (
@@ -462,8 +472,8 @@ export default function ReportDetailView() {
           <div className="ws-nextStepHeroTop">
             <div>
               <div className="ws-nextStepEyebrow">NEXT STEP</div>
-              <div className="ws-nextStepTitle">{report.nextStep.title}</div>
-              <div className="ws-nextStepDesc">{report.nextStep.description}</div>
+              <div className="ws-nextStepTitle">{report.nextStep.titleKey ? t(report.nextStep.titleKey) : report.nextStep.title}</div>
+              <div className="ws-nextStepDesc">{report.nextStep.descriptionKey ? t(report.nextStep.descriptionKey) : report.nextStep.description}</div>
             </div>
 
             <div className="ws-nextStepActions">

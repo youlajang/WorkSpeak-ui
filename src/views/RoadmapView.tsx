@@ -1,5 +1,38 @@
 // src/views/RoadmapView.tsx
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+/** Credits store localStorage key (same as StoreView). */
+const CREDITS_STORAGE_KEY = "ws-store-credits-owned";
+
+/** Store item ids that unlock a roadmap track when purchased (permanent, enabled). */
+const TRACK_ITEM_IDS: Record<string, string> = {
+  cafe: "perm_cafe_track",
+  medical: "perm_medical_sim",
+  interview: "perm_interview_master",
+};
+
+export const TRACK_LABELS: Record<string, string> = {
+  core: "Core",
+  cafe: "Cafe",
+  medical: "Medical",
+  interview: "Interview",
+};
+
+/** Core track is free (from landing job choice). Others from store permanent purchase. */
+function getUnlockedTrackIds(): string[] {
+  try {
+    const raw = localStorage.getItem(CREDITS_STORAGE_KEY);
+    if (!raw) return ["core"];
+    const owned = JSON.parse(raw) as Record<string, { enabled?: boolean }>;
+    const unlocked = Object.keys(TRACK_ITEM_IDS).filter(
+      (trackId) => owned[TRACK_ITEM_IDS[trackId]]?.enabled === true
+    );
+    return ["core", ...unlocked];
+  } catch {
+    return ["core"];
+  }
+}
 
 type Status = "done" | "current" | "locked";
 
@@ -25,70 +58,67 @@ function clamp(n: number, min: number, max: number) {
 }
 
 export default function RoadmapView() {
-  // 데모: 현재 위치 (나중에 서버에서 가져오면 됨)
+  const { t } = useTranslation();
   const current = useMemo(() => ({ stage: 2, unit: 1 }), []);
 
-  const stages: Stage[] = useMemo(() => {
-    // Stage별 Unit 구성(데모)
-    const makeUnits = (stageNo: number): Unit[] => {
-      const base = [
-        { key: 1, t: "Shipping & returns", s: "Refunds, exchanges, policies" },
-        { key: 2, t: "Customer conflicts", s: "De-escalation & boundaries" },
-        { key: 3, t: "Busy shift speed", s: "Fast, clear, polite phrases" }
-      ];
+  const unlockedTrackIds = useMemo(getUnlockedTrackIds, []);
+  const [selectedTrackId, setSelectedTrackId] = useState<string>(() => unlockedTrackIds[0] ?? "core");
 
-      return base.map((b) => {
+  useEffect(() => {
+    if (!unlockedTrackIds.includes(selectedTrackId)) {
+      setSelectedTrackId(unlockedTrackIds[0] ?? "core");
+    }
+  }, [unlockedTrackIds, selectedTrackId]);
+
+  const stages: Stage[] = useMemo(() => {
+    const makeUnits = (stageNo: number): Unit[] => {
+      return [1, 2, 3].map((key) => {
         const status: Status =
           stageNo < current.stage
             ? "done"
             : stageNo === current.stage
-            ? b.key < current.unit
+            ? key < current.unit
               ? "done"
-              : b.key === current.unit
+              : key === current.unit
               ? "current"
               : "locked"
             : "locked";
-
+        const titleKey = `roadmap.unit${key}Title` as const;
+        const subKey = `roadmap.unit${key}Sub` as const;
         return {
-          id: `st${stageNo}-u${b.key}`,
-          title: `Unit ${b.key} · ${b.t}`,
-          subtitle: b.s,
+          id: `st${stageNo}-u${key}`,
+          title: `Unit ${key} · ${t(titleKey)}`,
+          subtitle: t(subKey),
           sessions: 18,
           status
         };
       });
     };
 
-    const stageMeta = [
-      { no: 1, title: "Foundations", goal: "Basic café flow & polite essentials" },
-      { no: 2, title: "Service control", goal: "Returns, complaints, boundaries" },
-      { no: 3, title: "Rush hour", goal: "Speed + clarity under pressure" },
-      { no: 4, title: "Advanced requests", goal: "Edge cases & manager escalation" },
-      { no: 5, title: "Team & ops", goal: "Handoffs, shift notes, coordination" },
-      { no: 6, title: "Confidence", goal: "Natural tone & small talk" },
-      { no: 7, title: "Leadership", goal: "Handling tough customers calmly" },
-      { no: 8, title: "Mastery", goal: "Consistent performance & challenge mode" }
-    ];
+    const stageMeta = [1, 2, 3, 4, 5, 6, 7, 8].map((no) => ({
+      no,
+      titleKey: `roadmap.stage${no}Title` as const,
+      goalKey: `roadmap.stage${no}Goal` as const
+    }));
 
     return stageMeta.map((m) => {
       const status: Status =
         m.no < current.stage ? "done" : m.no === current.stage ? "current" : "locked";
-
       return {
         id: `stage-${m.no}`,
         stageNo: m.no,
-        title: m.title,
-        goal: m.goal,
+        title: t(m.titleKey),
+        goal: t(m.goalKey),
         status,
         units: makeUnits(m.no)
       };
     });
-  }, [current.stage, current.unit]);
+  }, [current.stage, current.unit, t]);
 
-  // 펼침/접힘(스테이지 단위)
-  const [openStage, setOpenStage] = useState<number | "all">("all");
+  // 펼침/접힘(스테이지 단위) - 디폴트: Focus current
+  const [openStage, setOpenStage] = useState<number | "all">(current.stage);
 
-  // 상단 progress (0~1)
+  // top progress (0–1)
   const progress = useMemo(() => {
     const totalStages = 8;
     const stageProg = (current.stage - 1) / totalStages;
@@ -100,47 +130,44 @@ export default function RoadmapView() {
       {/* Header */}
       <div className="ws-topbar" style={{ paddingLeft: 6, paddingRight: 6 }}>
         <div>
-          <h1 className="ws-title">Roadmap</h1>
+          <h1 className="ws-title">{t("nav.roadmap")}</h1>
           <div className="ws-sub">
-            Stage 1–8 전체 학습 루트. 현재 위치:{" "}
+            {t("roadmap.subtitle")}{" "}
             <b>
               Stage {current.stage} · Unit {current.unit}
             </b>
           </div>
         </div>
+      </div>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button
-            className="ws-btn ws-btn-outline ws-btn-sm"
-            type="button"
-            onClick={() => setOpenStage("all")}
-          >
-            Expand all
-          </button>
-          <button
-            className="ws-btn ws-btn-outline ws-btn-sm"
-            type="button"
-            onClick={() => setOpenStage(current.stage)}
-          >
-            Focus current
-          </button>
-          <button
-            className="ws-btn ws-btn-outline ws-btn-sm"
-            type="button"
-            onClick={() => setOpenStage(0)}
-            title="Collapse all"
-          >
-            Collapse
-          </button>
+      {/* Track tabs (Core = free from job; others = unlocked by store permanent purchase) */}
+      <div className="ws-roadTabsWrap">
+        <span className="ws-roadTabsLabel">{t("roadmap.trackLabel")}</span>
+        <div className="ws-roadTabs" role="tablist" aria-label="Select roadmap track">
+          {unlockedTrackIds.map((trackId) => (
+            <button
+              key={trackId}
+              type="button"
+              role="tab"
+              aria-selected={selectedTrackId === trackId}
+              className={"ws-roadTab " + (selectedTrackId === trackId ? "isActive" : "")}
+              onClick={() => setSelectedTrackId(trackId)}
+            >
+              {TRACK_LABELS[trackId] ?? trackId}
+              {trackId === "core" && (
+                <span className="ws-roadTabBadge" title={t("roadmap.freeBadgeTitle")}>{t("roadmap.freeBadge")}</span>
+              )}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Progress bar */}
       <section className="ws-card ws-roadProgress">
         <div className="ws-roadProgressTop">
-          <div className="ws-cardTitle">Overall progress</div>
+          <div className="ws-cardTitle">{t("roadmap.overallProgress")}</div>
           <div className="ws-pill">
-            Stage {current.stage} / 8
+            {t("roadmap.stageOf8", { current: current.stage })}
           </div>
         </div>
 
@@ -149,9 +176,32 @@ export default function RoadmapView() {
         </div>
 
         <div className="ws-roadHint">
-          다음 목표: <b>Stage {current.stage} · Unit {current.unit}</b> 완료 → 다음 유닛/스테이지로 이동
+          {t("roadmap.nextGoal", { stage: current.stage, unit: current.unit })}
         </div>
       </section>
+
+      {/* Stage list header: title (left) + View filter (right) — filter labels stay in English */}
+      <div className="ws-roadListHeader">
+        <h2 className="ws-roadListTitle">{t("roadmap.coreStages")}</h2>
+        <div className="ws-roadFilter">
+          <span className="ws-roadFilterLabel">{t("roadmap.view")}:</span>
+          <select
+            className="ws-roadFilterSelect"
+            value={openStage === "all" ? "all" : openStage === current.stage ? "focus" : "collapse"}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === "all") setOpenStage("all");
+              else if (v === "focus") setOpenStage(current.stage);
+              else setOpenStage(0);
+            }}
+            aria-label="Roadmap view"
+          >
+            <option value="focus">{t("roadmap.focusCurrent")}</option>
+            <option value="all">{t("roadmap.expandAll")}</option>
+            <option value="collapse">{t("roadmap.collapsed")}</option>
+          </select>
+        </div>
+      </div>
 
       {/* Stage list */}
       <section className="ws-roadList" aria-label="All stages roadmap">
@@ -176,19 +226,27 @@ export default function RoadmapView() {
 
                 <div className="ws-stageRight">
                   {st.status === "current" && (
-                    <span className="ws-pill ws-pill-warn">Current</span>
+                    <span className="ws-roadStageLabel ws-roadStageLabelCurrent">{t("roadmap.current")}</span>
                   )}
-                  {st.status === "done" && <span className="ws-pill">Completed</span>}
-                  {st.status === "locked" && <span className="ws-pill">Locked</span>}
+                  {st.status === "done" && (
+                    <span className="ws-roadStageLabel ws-roadStageLabelDone">{t("roadmap.completed")}</span>
+                  )}
+                  {st.status === "locked" && (
+                    <span className="ws-roadStageLabel ws-roadStageLabelLocked">{t("roadmap.locked")}</span>
+                  )}
 
                   <button
-                    className="ws-btn ws-btn-outline ws-btn-sm"
                     type="button"
+                    className="ws-stageToggle"
                     onClick={() =>
                       setOpenStage((prev) => (prev === st.stageNo ? 0 : st.stageNo))
                     }
+                    aria-expanded={isOpen}
+                    aria-label={isOpen ? t("roadmap.hideUnits") : t("roadmap.viewUnits")}
                   >
-                    {isOpen ? "Hide units" : "View units"}
+                    <span className="ws-stageArrow" aria-hidden>
+                      {isOpen ? "▼" : "▲"}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -202,13 +260,13 @@ export default function RoadmapView() {
                       <div className="ws-unitSub">{u.subtitle}</div>
 
                       <div className="ws-unitMeta">
-                        <span className="ws-pill">Sessions · {u.sessions}</span>
+                        <span className="ws-pill">{t("roadmap.sessions")} · {u.sessions}</span>
                         <span className="ws-pill">
                           {u.status === "done"
-                            ? "Done"
+                            ? t("roadmap.done")
                             : u.status === "current"
-                            ? "Next"
-                            : "Locked"}
+                            ? t("roadmap.next")
+                            : t("roadmap.locked")}
                         </span>
                       </div>
 
@@ -224,10 +282,10 @@ export default function RoadmapView() {
                         disabled={u.status === "locked"}
                       >
                         {u.status === "current"
-                          ? "Open unit"
+                          ? t("roadmap.openUnit")
                           : u.status === "done"
-                          ? "Review"
-                          : "Locked"}
+                          ? t("roadmap.review")
+                          : t("roadmap.locked")}
                       </button>
                     </div>
                   ))}

@@ -540,6 +540,11 @@ export default function StatsView() {
       {/* Header */}
       <header className="ws-statsHeader">
         <div className="ws-titleBlock">
+          <div className="ws-statsBackRow">
+            <button type="button" className="ws-link ws-linkSm" onClick={() => navigate("/profile")}>
+              ← Profile
+            </button>
+          </div>
           <div className="ws-title">Stats</div>
           <div className="ws-subtitle">Overview · {range === "7d" ? "Last 7 days" : "Last 30 days"}</div>
         </div>
@@ -652,7 +657,7 @@ export default function StatsView() {
                 <button className="ws-primaryBtn" onClick={() => startPractice(weakest)} disabled={busy}>
                   {busy ? "Starting..." : "Start practice"}
                 </button>
-                <button className="ws-secondaryBtn" onClick={() => navigate("/reports")}>
+                <button className="ws-secondaryBtn" onClick={() => navigate("/profile/reports")}>
                   See details
                 </button>
               </div>

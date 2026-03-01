@@ -1,6 +1,7 @@
 // src/views/ReportsView.tsx
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation, Trans } from "react-i18next";
 
 type ReportKind = "quest" | "level_test";
 type LevelChange = "promoted" | "demoted" | "same" | "none";
@@ -60,11 +61,12 @@ function parseDateInputValue(v: string) {
   return new Date(y, (m ?? 1) - 1, d ?? 1);
 }
 function formatDateLite(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  });
+  const d = new Date(iso);
+  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  const month = months[d.getMonth()];
+  const day = String(d.getDate()).padStart(2, "0");
+  const year = d.getFullYear();
+  return `${month} ${day}, ${year}`;
 }
 function levelLabel(v?: LevelChange) {
   if (v === "promoted") return "Promoted";
@@ -112,9 +114,7 @@ function SelectField({
 }) {
   return (
     <label className="ws-reportSelectField">
-      <div className="ws-mutedSmall ws-reportSelectLabel" style={{ fontWeight: 900 }}>
-        {label}
-      </div>
+      <div className="ws-reportFilterLabel">{label}</div>
       <select
         className="ws-select"
         value={value}
@@ -128,6 +128,7 @@ function SelectField({
 }
 
 export default function ReportsView() {
+  const { t } = useTranslation();
   const nav = useNavigate();
 
   // Filters
@@ -237,14 +238,6 @@ export default function ReportsView() {
     setEndDate(end);
   };
 
-  const resetFilters = () => {
-    setStage("all");
-    setUnit("all");
-    setKind("all");
-    setSort("newest");
-    applyPreset("3m");
-  };
-
   const onChangeStart = (v: string) => {
     const picked = startOfDay(parseDateInputValue(v));
     const clamped = picked < maxWindowStart ? maxWindowStart : picked;
@@ -290,52 +283,44 @@ export default function ReportsView() {
   }, [filtered, sort]);
 
   return (
-    <section>
-      {/* Header */}
-      <div className="ws-topbar" style={{ paddingLeft: 6, paddingRight: 6 }}>
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 10 }}>
-          <div>
-            <h1 className="ws-title">Reports</h1>
-            <div className="ws-sub">Filter and open your full report details.</div>
+    <div className="ws-reportsPage">
+      <header className="ws-topbar" style={{ paddingLeft: 6, paddingRight: 6 }}>
+        <div className="ws-topbarLeft">
+          <div className="ws-reportBackRow">
+            <button type="button" className="ws-link ws-linkSm" onClick={() => nav("/profile")}>
+              ← Profile
+            </button>
           </div>
-
-          {/* Info toggle */}
-          <button
-            type="button"
-            className="ws-btn ws-btn-outline ws-btn-sm"
-            onClick={() => setShowInfo((v) => !v)}
-            aria-expanded={showInfo}
-            style={{ height: 40 }}
-            title="Info"
-          >
-            Info
-          </button>
+          <h1 className="ws-title">{t("reports.title")}</h1>
+          <div className="ws-reportSubRow">
+            <span className="ws-sub">{t("reports.openReport")}</span>
+            <button
+              type="button"
+              className="ws-btn ws-btn-utility"
+              onClick={() => setShowInfo((v) => !v)}
+              aria-expanded={showInfo}
+              title={t("reports.info")}
+            >
+              {t("reports.info")}
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Info card (toggle) */}
       {showInfo && (
-        <section className="ws-card ws-reportNotice" style={{ marginTop: 12 }}>
-          <div className="ws-reportNoticeTitle">Retention policy</div>
-          <div className="ws-sub" style={{ marginTop: 6 }}>
-            Reports are retained for <b>up to 1 year</b>. Older reports are removed automatically.
-          </div>
-        </section>
+        <div className="ws-reportNoticeBlock">
+          <span className="ws-reportNoticeBlockTitle">{t("reports.retentionPolicyTitle")}</span>
+          <span className="ws-reportNoticeBlockText">
+            <Trans i18nKey="reports.retentionPolicyText" components={{ 1: <b /> }} />
+          </span>
+        </div>
       )}
 
-      {/* Filters */}
-      <section className="ws-card ws-reportFilters" style={{ marginTop: 12 }}>
-        <div className="ws-cardTitleRow">
-          <div className="ws-cardTitle">Filters</div>
-          <button className="ws-btn ws-btn-outline ws-btn-sm" type="button" onClick={resetFilters}>
-            Reset
-          </button>
-        </div>
-
+      <section className="ws-card ws-reportFilters">
         {/* ===== 2-row grid: left half = Stage, Unit, Range | right half = Type, Sort | mobile: 1 col ===== */}
         <div className="ws-reportFilterRow ws-reportFilterRow--reports">
           {/* Left half — row 1: Stage + Unit */}
-          <div style={{ display: "grid", gridTemplateColumns: "160px 160px", gap: 10, alignItems: "end" }}>
+          <div className="ws-reportFilterStageUnit">
             <div className="ws-reportFilterCell">
               <SelectField
                 label="Stage"
@@ -378,10 +363,8 @@ export default function ReportsView() {
 
           {/* Right half — row 1: Type */}
           <div className="ws-reportFilterCellWide">
-            <div className="ws-mutedSmall" style={{ fontWeight: 900, lineHeight: 1 }}>
-              Type
-            </div>
-            <div className="ws-radioRow ws-radioRowTight" style={{ marginTop: 6 }}>
+            <div className="ws-reportFilterLabel">Type</div>
+            <div className="ws-radioRow ws-radioRowTight">
               <RadioPill name="reportType" value="all" checked={kind === "all"} onChange={() => setKind("all")} label="All" />
               <RadioPill
                 name="reportType"
@@ -401,11 +384,8 @@ export default function ReportsView() {
           </div>
 
           <div className="ws-reportFilterRange">
-            <div className="ws-mutedSmall" style={{ fontWeight: 900, lineHeight: 1 }}>
-              Range
-            </div>
-
-            <div className="ws-radioRow ws-radioRowTight" style={{ marginTop: 6 }}>
+            <div className="ws-reportFilterLabel">Range</div>
+            <div className="ws-radioRow ws-radioRowTight">
               <RadioPill name="rangePreset" value="7d" checked={datePreset === "7d"} onChange={() => applyPreset("7d")} label="7d" />
               <RadioPill name="rangePreset" value="3m" checked={datePreset === "3m"} onChange={() => applyPreset("3m")} label="3m" />
               <RadioPill name="rangePreset" value="6m" checked={datePreset === "6m"} onChange={() => applyPreset("6m")} label="6m" />
@@ -420,11 +400,9 @@ export default function ReportsView() {
             </div>
 
             {datePreset === "custom" && (
-              <div className="ws-dateGrid ws-dateGridTight" style={{ marginTop: 10 }}>
+              <div className="ws-dateGrid ws-dateGridTight">
                 <label className="ws-dateField">
-                  <div className="ws-mutedSmall" style={{ fontWeight: 900 }}>
-                    Start
-                  </div>
+                  <div className="ws-reportFilterLabel">Start</div>
                   <input
                     className="ws-dateInput"
                     type="date"
@@ -436,9 +414,7 @@ export default function ReportsView() {
                 </label>
 
                 <label className="ws-dateField">
-                  <div className="ws-mutedSmall" style={{ fontWeight: 900 }}>
-                    End
-                  </div>
+                  <div className="ws-reportFilterLabel">End</div>
                   <input
                     className="ws-dateInput"
                     type="date"
@@ -457,10 +433,8 @@ export default function ReportsView() {
           </div>
 
           <div className="ws-reportFilterSort">
-            <div className="ws-mutedSmall" style={{ fontWeight: 900, lineHeight: 1 }}>
-              Sort
-            </div>
-            <div className="ws-radioRow ws-radioRowTight" style={{ marginTop: 6 }}>
+            <div className="ws-reportFilterLabel">Sort</div>
+            <div className="ws-radioRow ws-radioRowTight">
               <RadioPill name="sort" value="newest" checked={sort === "newest"} onChange={() => setSort("newest")} label="Newest" />
               <RadioPill name="sort" value="score" checked={sort === "score"} onChange={() => setSort("score")} label="Score" />
             </div>
@@ -468,38 +442,52 @@ export default function ReportsView() {
         </div>
       </section>
 
-      {/* Results */}
-      <section className="ws-card" style={{ marginTop: 12 }}>
-        <div className="ws-cardTitleRow">
-          <div className="ws-cardTitle">Results</div>
-          <div className="ws-pill">{sorted.length} reports</div>
+      {/* Results 헤더: 카드 밖 */}
+      <div className="ws-reportResultsHeader">
+        <div>
+          <h2 className="ws-cardTitle">Results</h2>
+          <span className="ws-reportCount">{sorted.length} reports</span>
         </div>
-
-        {sorted.length === 0 ? (
-          <div className="ws-sub" style={{ paddingTop: 8 }}>
-            No reports found. Try different filters or press Reset.
+        {sorted.length > 0 && (
+          <div className="ws-sub" style={{ marginTop: 4 }}>
+            Click a report to open full details.
           </div>
-        ) : (
-          <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
+        )}
+      </div>
+
+      {sorted.length === 0 ? (
+        <section className="ws-card ws-reportEmptyState">
+          <div className="ws-sub">{t("reports.noResults")}</div>
+        </section>
+      ) : (
+        <section className="ws-card">
+          <div className="ws-reportList">
             {sorted.map((r) => (
               <button
                 key={r.id}
                 type="button"
                 className="ws-reportRow"
-                onClick={() => nav(`/reports/${r.id}`)} // ✅ router navigation
+                onClick={() => nav(`/profile/reports/${r.id}`)} // ✅ router navigation
               >
                 <div className="ws-reportLeft">
-                  <div className="ws-reportTitleRow">
-                    <span className={`ws-kindTag ${r.kind === "quest" ? "is-quest" : "is-test"}`}>
+                  <div className="ws-reportTitleBlock">
+                    <span className={`ws-kindTag ws-kindTag--vertical ${r.kind === "quest" ? "is-quest" : "is-test"}`}>
                       {kindLabel(r.kind)}
                     </span>
-                    <div className="ws-reportTitleText">{r.title}</div>
-                  </div>
-
-                  <div className="ws-reportMeta">
-                    <span className="ws-pillMini">{`Stage ${r.stage}`}</span>
-                    <span className="ws-pillMini">{`Unit ${r.unit}`}</span>
-                    <span className="ws-reportDate">{formatDateLite(r.createdAt)}</span>
+                    <div className="ws-reportTitleGroup">
+                      <div className="ws-reportTitleRow">
+                        <div className="ws-reportTitleText">{r.title}</div>
+                      </div>
+                      <div className="ws-reportMeta">
+                        <span>Stage {r.stage}</span>
+                        <span className="ws-reportMetaSep">|</span>
+                        <span>Unit {r.unit}</span>
+                        <span className="ws-reportMetaSep">|</span>
+                        <span className={`ws-reportLevelText ${r.levelChange ?? "none"}`}>{levelLabel(r.levelChange)}</span>
+                        <span className="ws-reportMetaSep">|</span>
+                        <span className="ws-reportMetaDate">{formatDateLite(r.createdAt)}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -509,14 +497,13 @@ export default function ReportsView() {
                     {typeof r.xpEarned === "number" && <span>⭐ {r.xpEarned} XP</span>}
                     {typeof r.pointsEarned === "number" && <span>💎 {r.pointsEarned} P</span>}
                   </div>
-                  <div className={`ws-levelBadge ${r.levelChange ?? "none"}`}>{levelLabel(r.levelChange)}</div>
                 </div>
               </button>
             ))}
           </div>
-        )}
-      </section>
-    </section>
+        </section>
+      )}
+    </div>
   );
 }
 

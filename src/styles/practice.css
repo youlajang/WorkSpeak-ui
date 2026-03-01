@@ -222,6 +222,41 @@
   color: #fff;
 }
 
+/* Topbar: 14d/90d left of History, same height as outline buttons */
+.pTopbarActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pSegmentTopbar .pSegBtn {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Topbar icon-only buttons (Stats, Study Settings) */
+.pTopbarIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--pill);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.pTopbarIconBtn:hover {
+  background: color-mix(in srgb, var(--primary) 12%, var(--pill));
+  color: var(--primary);
+}
+
 /* Weakness list */
 .pWeakList {
   display: flex;

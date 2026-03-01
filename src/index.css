@@ -169,6 +169,18 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
+.ws-themeBtn.ws-profileCardBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ws-profileCardBtn.is-active {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--line));
+  background: color-mix(in srgb, var(--primary) 12%, var(--panel));
+}
+
 /* ✅ profile button (avatar only) */
 .ws-profileBtn {
   border: 1px solid var(--line);
@@ -194,6 +206,31 @@ body {
   background: color-mix(in srgb, var(--primary) 20%, transparent);
   border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
   font-weight: 800;
+}
+
+.ws-avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+
+.ws-avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px;
+  display: block;
+}
+
+.ws-avatarMark {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.ws-avatar-lg {
+  width: 64px;
+  height: 64px;
+  font-size: 24px;
 }
 
 /* =============================
@@ -300,6 +337,12 @@ body {
   align-items: start;
 }
 
+/* Home: below hero — Learning path 2/3, sidebar 1/3 */
+.ws-gridBelowHero {
+  grid-template-columns: 2fr 1fr;
+  margin-top: 16px;
+}
+
 .ws-center,
 .ws-right {
   display: flex;
@@ -326,6 +369,1627 @@ body {
   margin-bottom: 6px;
 }
 
+/* =============================
+   Profile page
+============================= */
+.ws-profilePage {
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ws-profileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ws-profileCard {
+  padding: 20px;
+}
+
+.ws-profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ws-profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ws-profileName {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.ws-profileMeta {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ws-profileMetaSep {
+  margin: 0 6px;
+}
+
+.ws-profileKpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ws-kpiPill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.ws-profileSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ws-profileSectionTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.ws-profileEntryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.ws-profileEntryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.ws-profileEntryCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-profileEntryIcon {
+  font-size: 28px;
+}
+
+.ws-profileEntryLabel {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.ws-profileEntryDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* =============================
+   Profile (pf-) — 내 정보, 캐릭터, My Access, Progress
+============================= */
+.pfWrap {
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pfTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pfTitle {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+}
+
+.pfSub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.pfMain {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pfChip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
+}
+
+.pfChipIcon {
+  font-size: 24px;
+}
+
+.pfChipMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pfChipTop {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pfChipNum {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.pfGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .pfGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pfPanel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.pfPanelMyInfo {
+  position: relative;
+}
+
+.pfCreateProfileOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: var(--shadow);
+}
+
+.pfCreateProfileOverlayBtn {
+  padding: 16px 28px;
+  border-radius: 14px;
+  border: none;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.pfCreateProfileOverlayBtn:hover {
+  filter: brightness(1.06);
+}
+
+.pfPanelTitle {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.pfMyInfoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.pfSettingsIconBtn {
+  padding: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+.pfSettingsIconBtn:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--primary) 10%, var(--pill));
+}
+
+.pfSettingsIcon {
+  font-size: 20px;
+  display: block;
+}
+
+.pfAvatarBigBtn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.pfAvatarBigBtn:hover .pfAvatarBig {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+.pfAvatarBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pfAvatarEditHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.pfAvatarBigBtn:hover + .pfAvatarEditHint,
+.pfAvatarEditHint:hover {
+  color: var(--primary);
+}
+
+.pfAvatarEditIcon {
+  font-size: 10px;
+}
+
+.pfNicknameRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  margin: 0 0 4px;
+}
+
+.pfNicknameRow:hover {
+  color: var(--primary);
+}
+
+.pfNicknameEditIcon {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.pfNicknameEditRow {
+  margin-bottom: 4px;
+}
+
+.pfNicknameInput {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text);
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  min-width: 120px;
+  max-width: 100%;
+}
+
+.pfNicknameInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.pfAccountLink {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+
+.pfAccountLink:hover {
+  text-decoration: underline;
+}
+
+.pfFooterLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.pfFooterLink {
+  font-size: 12px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pfFooterLink:hover {
+  color: var(--text);
+}
+
+.pfFooterSep {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pfModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.pfModal {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+.pfModalLarge {
+  max-width: 500px;
+}
+
+.pfModalTitle {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.pfModalPhotoUpload {
+  margin-bottom: 20px;
+  padding: 24px;
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--pill) 50%, transparent);
+  text-align: center;
+}
+
+/* 프로필 생성: 사진 추가 영역 카드 */
+.pfPhotoUploadCard {
+  margin-top: 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 120px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pfPhotoUploadCard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.pfPhotoUploadCard:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.pfPhotoUploadCardImg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pfPhotoUploadCardIcon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.pfPhotoUploadCardLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pfPhotoUploadBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.pfPhotoUploadBtn:hover {
+  opacity: 0.8;
+}
+
+.pfPhotoUploadIcon {
+  font-size: 32px;
+}
+
+.pfPhotoUploadLabel {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pfFileInputHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pfCropArea {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+
+.pfCropImageContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: move;
+  overflow: hidden;
+}
+
+.pfCropImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  transform-origin: center center;
+  user-select: none;
+  pointer-events: none;
+}
+
+.pfCropCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 999px;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 0 9999px color-mix(in srgb, var(--bg) 85%, transparent);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.pfCropHint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.pfModalRemovePhoto {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.pfModalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+/* 야간 모드: 프로필 모달·오버레이 불투명 처리 */
+html[data-theme="dark"] .pfModalOverlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+html[data-theme="dark"] .pfModal {
+  background: #151d2e;
+}
+
+/* 프로필 서브 페이지 공통: 설정·마이 어카운트 같은 폭 */
+.pfSettingsWrap {
+  max-width: 560px;
+}
+
+.pfSettingsIntro {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.pfSettingsCard {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.pfSettingsCard:last-of-type {
+  margin-bottom: 0;
+}
+
+.pfSettingsCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.pfSettingsCardIcon {
+  font-size: 18px;
+}
+
+.pfSettingsCardDesc {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.pfSettingList {
+  display: flex;
+  flex-direction: column;
+}
+
+.pfSettingList .pfSettingRow {
+  padding: 14px 0;
+}
+
+.pfSettingList .pfSettingRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 로그아웃·계정삭제: 같은 레벨 버튼 (Help/About 링크와 구분) */
+.pfSettingsAccountActions {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 280px;
+}
+
+.pfSettingsAccountBtn {
+  width: 100%;
+  justify-content: center;
+}
+
+.pfPanelDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.pfUserCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pfAvatarBig {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 60px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.pfAvatarBigImg {
+  overflow: hidden;
+}
+
+.pfAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px;
+}
+
+.pfUserMeta {
+  min-width: 0;
+}
+
+.pfUserName {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+
+.pfUserEmailRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.pfUserEmail {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.pfUserEmailEdit {
+  padding: 2px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.pfUserEmailEdit:hover {
+  opacity: 1;
+}
+
+.pfUserDivider {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 0 12px;
+}
+
+.pfUserKpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pfKpiPill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.pfUserExtra {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.pfUserHint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.pfAccessHeader {
+  margin-bottom: 4px;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.pfAccessHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.pfDivider {
+  height: 1px;
+  background: var(--line);
+  margin: 16px 0;
+}
+
+.pfAvatarGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.pfAvatarCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: center;
+}
+
+.pfAvatarCard:hover {
+  border-color: color-mix(in srgb, var(--primary) 25%, var(--line));
+  background: color-mix(in srgb, var(--primary) 8%, var(--pill));
+}
+
+.pfAvatarCardActive {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 14%, var(--panel));
+}
+
+.pfAvatarMark {
+  font-size: 28px;
+}
+
+.pfAvatarName {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.pfAvatarMeta {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.pfAccessList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Purchase record card — clearly distinct from Practice "session" and Store product cards */
+.pfAccessCard {
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Receipt-style header: "Purchase" identity so it doesn't look like a session block */
+.pfAccessCardHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: color-mix(in srgb, #0d9488 10%, var(--panel));
+  border-bottom: 1px dashed var(--line);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.pfAccessCardBody {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pfAccessTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Type pill: product type only (Use once / Session / Unlock forever) — not the same as "practice session" */
+.pfPill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.pfPillInstant {
+  background: color-mix(in srgb, var(--hero-b) 18%, transparent);
+  color: #16a34a;
+  border: 1px solid color-mix(in srgb, var(--hero-b) 35%, var(--line));
+}
+
+.pfPillSession {
+  background: color-mix(in srgb, var(--hero-c) 18%, transparent);
+  color: #a855f7;
+  border: 1px solid color-mix(in srgb, var(--hero-c) 35%, var(--line));
+}
+
+.pfPillPermanent {
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--line));
+}
+
+.pfAccessRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pfBadge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: var(--pill);
+  color: var(--muted);
+}
+
+.pfStatus {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.pfAccessTitle {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 0;
+}
+
+.pfAccessDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.pfAccessMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+  border-top: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--line);
+  margin: 8px 0;
+}
+
+.pfAccessMetaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.pfAccessMetaLabel {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.pfAccessMetaValue {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pfAccessFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pfMutedSmall {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.pfBtn {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.pfBtnPrimary {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-color: var(--primary);
+}
+
+.pfBtnPrimary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.pfBtnGhost {
+  background: var(--pill);
+  color: var(--muted);
+}
+
+.pfBtnGhost:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.pfEmpty {
+  padding: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  border-radius: 14px;
+  border: 1px dashed var(--line);
+  background: color-mix(in srgb, var(--panel) 90%, transparent);
+}
+
+.pfNote {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 14px;
+  line-height: 1.4;
+}
+
+/* Progress & history (Reports, Stats) */
+.pfSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pfSectionTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.pfEntryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.pfEntryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.pfEntryCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.pfEntryIcon {
+  font-size: 28px;
+}
+
+.pfEntryLabel {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.pfEntryDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.pfLogoutRow {
+  margin-top: 14px;
+}
+
+.pfBtnLogout {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--line);
+}
+
+.pfBtnLogout:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+/* Profile subviews: Settings, Account, Help, About */
+.pfSettingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pfSettingRow:last-child {
+  border-bottom: none;
+}
+
+.pfSettingLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pfToggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--pill);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.pfToggleThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  transition: transform 0.2s;
+}
+
+.pfToggleOn {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.pfToggleOn .pfToggleThumb {
+  transform: translateX(20px);
+  border-color: var(--primary-contrast);
+  background: var(--primary-contrast);
+}
+
+.pfSelect {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 120px;
+}
+
+.pfSettingHint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 2px 0 0;
+  font-weight: 500;
+}
+
+.pfSettingTimeInput {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pfSettingTimeInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* 푸시 알림 하위: 매일 알림 시간 (위계) */
+.pfSettingRow--pushGroup {
+  border-bottom: none;
+}
+
+.pfPushSub {
+  margin-top: 0;
+  padding: 12px 0 12px 16px;
+  border-left: 3px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pfPushSub .pfSettingLabel {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pfPushSub .pfSettingHint {
+  margin: 0;
+}
+
+.pfPushSub .pfSettingTimeInput {
+  align-self: flex-start;
+}
+
+/* 앱 언어: 셀렉트 박스 + 국기 이미지 */
+.pfLangSelectWrap {
+  position: relative;
+  min-width: 160px;
+}
+
+.pfLangSelectBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  min-width: 180px;
+}
+
+.pfLangSelectBtn:hover {
+  background: var(--pill);
+}
+
+.pfLangSelectFlagWrap {
+  position: relative;
+  width: 28px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pfLangSelectFlagImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.pfLangSelectFlagEmoji {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pfLangSelectLabel {
+  flex: 1;
+}
+
+.pfLangSelectChevron {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.pfLangSelectDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 4px 0 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.pfLangSelectDropdown li {
+  margin: 0;
+}
+
+.pfLangSelectOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.pfLangSelectOption:hover {
+  background: var(--pill);
+}
+
+.pfLangSelectOptionActive {
+  background: color-mix(in srgb, var(--primary) 12%, var(--panel));
+}
+
+/* 그리드: [트랙(슬라이더+눈금)] [배속값] / [0 1 2 3 숫자] [빈칸] → 트랙과 숫자 눈금 같은 너비 */
+.pfSpeedSliderBlock {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 6px 14px;
+  min-width: 0;
+  flex: 1;
+  max-width: 300px;
+  align-items: center;
+}
+
+.pfSpeedSliderTrackWrap {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.pfSpeedSlider {
+  display: block;
+  width: 100%;
+  height: 10px;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border-radius: 999px;
+}
+
+.pfSpeedSlider::-webkit-slider-runnable-track {
+  height: 10px;
+  background: var(--pill);
+  border-radius: 999px;
+}
+
+.pfSpeedSlider::-moz-range-track {
+  height: 10px;
+  background: var(--pill);
+  border-radius: 999px;
+}
+
+.pfSpeedSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -6px;
+  border-radius: 999px;
+  background: var(--primary);
+  border: 2px solid var(--primary-contrast);
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+.pfSpeedSlider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--primary);
+  border: 2px solid var(--primary-contrast);
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+/* 트랙 위 눈금선 (0, 1, 2, 3 위치) */
+.pfSpeedTickMarks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 10px;
+  pointer-events: none;
+}
+
+.pfSpeedTick {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--line);
+  border-radius: 1px;
+  transform: translateX(-50%);
+}
+
+.pfSpeedValue {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  min-width: 44px;
+  text-align: right;
+}
+
+.pfSpeedTicks {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 0 1px;
+}
+
+.pfSpeedTicks span {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.pfSpeedTicks span:first-child { text-align: left; }
+.pfSpeedTicks span:last-child { text-align: right; }
+
+.pfSettingRow--slider {
+  flex-wrap: wrap;
+}
+
+.pfSettingRow--slider .pfSettingLabel {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.pfForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pfFormLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pfInput {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.pfInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.pfInputError {
+  border-color: var(--warn);
+}
+
+.pfInputError:focus {
+  border-color: var(--warn);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warn) 18%, transparent);
+}
+
+.pfFormError {
+  font-size: 12px;
+  color: var(--warn);
+}
+
+.pfFormSuccess {
+  font-size: 12px;
+  color: var(--hero-b);
+}
+
+.pfPanelDanger .pfPanelTitle {
+  color: var(--warn);
+}
+
+.pfBtnDanger {
+  background: transparent;
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
+.pfBtnDanger:hover {
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+}
+
+.pfToast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: var(--text);
+  color: var(--panel);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  z-index: 100;
+}
+
+.pfFaqList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pfFaqItem {
+  border-bottom: 1px solid var(--line);
+}
+
+.pfFaqItem:last-child {
+  border-bottom: none;
+}
+
+.pfFaqQuestion {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pfFaqQuestion:hover {
+  color: var(--primary);
+}
+
+.pfFaqChevron {
+  font-size: 10px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.pfFaqAnswer {
+  padding: 0 0 14px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.pfContactRow {
+  margin-top: 8px;
+}
+
+.pfLink {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pfLink:hover {
+  text-decoration: underline;
+}
+
+.pfAboutBrand {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.pfAboutVersion {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.pfAboutLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .ws-cardTitle {
   font-weight: 900;
   letter-spacing: -0.01em;
@@ -345,6 +2009,16 @@ body {
   color: var(--primary);
   cursor: pointer;
   font-weight: 800;
+}
+
+.ws-linkSm {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ws-reportBackRow,
+.ws-statsBackRow {
+  margin-bottom: 6px;
 }
 
 /* Pills */
@@ -815,12 +2489,208 @@ body {
 
 .ws-leaderRow {
   display: grid;
-  grid-template-columns: 22px 1fr auto;
+  grid-template-columns: 22px 40px 1fr auto;
   gap: 10px;
+  align-items: center;
   padding: 10px 10px;
   border-radius: 14px;
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--panel) 78%, transparent);
+}
+
+.ws-leaderAvatarBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.ws-leaderAvatarBtn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-leaderAvatarBtn:disabled {
+  cursor: default;
+}
+
+.ws-leaderAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ws-leaderAvatarMark {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Leader profile popup — 새 디자인 */
+.ws-leaderProfileOverlay {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.ws-leaderProfileCard {
+  position: relative;
+  width: min(368px, 92vw);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.ws-leaderProfileClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s, color 0.2s;
+}
+
+.ws-leaderProfileClose:hover {
+  background: var(--panel);
+  color: var(--text);
+}
+
+.ws-leaderProfileHead {
+  padding: 28px 28px 20px;
+  text-align: center;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--primary) 12%, var(--panel)) 0%, var(--panel) 85%);
+}
+
+.ws-leaderProfileAvatarWrap {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--pill);
+  display: grid;
+  place-items: center;
+  border: 2px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.ws-leaderProfileAvatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ws-leaderProfileAvatarMark {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.ws-leaderProfileTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.ws-leaderProfileStats {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px 20px;
+}
+
+.ws-leaderProfileStat {
+  flex: 1;
+  max-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--pill) 50%, transparent);
+  border: 1px solid var(--line);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.ws-leaderProfileStat:hover {
+  background: var(--pill);
+  border-color: color-mix(in srgb, var(--primary) 18%, var(--line));
+}
+
+.ws-leaderProfileStatIcon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.ws-leaderProfileStatText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  text-align: center;
+}
+
+.ws-leaderProfileStatLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.ws-leaderProfileStatValue {
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.ws-btn-ghost.ws-btn-icon {
+  min-width: 36px;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.ws-btn-ghost.ws-btn-icon:hover {
+  background: var(--pill);
+  color: var(--text);
 }
 
 .ws-leaderRow.is-me {
@@ -919,6 +2789,75 @@ body {
   padding: 10px 10px 14px;
 }
 
+/* Alert / Confirm dialog (앱 디자인 통일) */
+.ws-dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.ws-dialog {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+html[data-theme="dark"] .ws-dialog {
+  background: #151d2e;
+}
+
+.ws-dialogMessage {
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.ws-dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ws-dialogBtn {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ws-dialogBtnCancel {
+  background: var(--panel);
+  color: var(--text);
+}
+
+.ws-dialogBtnCancel:hover {
+  background: var(--pill);
+}
+
+.ws-dialogBtnOk {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-color: var(--primary);
+}
+
+.ws-dialogBtnOk:hover {
+  filter: brightness(1.08);
+}
+
 /* =============================
    13) Responsive
 ============================= */
@@ -1007,6 +2946,119 @@ body {
   box-sizing: border-box;
 }
 
+/* Track tabs (Core = free; others = unlocked via store) */
+.ws-roadTabsWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.ws-roadTabsLabel {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.ws-roadTabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ws-roadTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  box-shadow: var(--shadow-soft);
+}
+
+.ws-roadTab:hover {
+  background: var(--pill);
+}
+
+.ws-roadTab.isActive {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ws-roadTabBadge {
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--hero-b) 20%, transparent);
+  color: #16a34a;
+}
+
+/* Stage list header: title (left) + View select (right), tight spacing with list */
+.ws-roadListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  margin-bottom: 10px;
+}
+
+.ws-roadListTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.ws-roadFilter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ws-roadFilterLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-right: 2px;
+}
+
+.ws-roadFilterSelect {
+  padding: 4px 24px 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.ws-roadFilterSelect:hover {
+  border-color: color-mix(in srgb, var(--primary) 20%, var(--line));
+}
+
+.ws-roadFilterSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
 .ws-roadProgressTop{
   display:flex;
   justify-content:space-between;
@@ -1039,7 +3091,7 @@ body {
   display:flex;
   flex-direction:column;
   gap: 12px;
-  margin-top: 12px;
+  margin-top: 0;
   min-width: 0;
   max-width: 100%;
 }
@@ -1084,8 +3136,9 @@ body {
 }
 
 .ws-stageBadge.done{
-  background: color-mix(in srgb, #22c55e 16%, transparent);
-  border-color: color-mix(in srgb, #22c55e 28%, var(--line));
+  background: var(--pill);
+  border-color: var(--line);
+  color: var(--muted);
 }
 
 .ws-stageTitle{
@@ -1105,6 +3158,51 @@ body {
   justify-content:flex-end;
   flex-shrink: 0;
   min-width: 0;
+}
+
+/* Status labels (not buttons): Current / Completed / Locked */
+.ws-roadStageLabel {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.ws-roadStageLabelCurrent {
+  color: var(--primary);
+}
+
+.ws-roadStageLabelDone {
+  color: var(--muted);
+}
+
+.ws-roadStageLabelLocked {
+  color: var(--muted);
+}
+
+/* Accordion toggle: ▼ open, ▲ closed (triangle only, no box) */
+.ws-stageToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.ws-stageToggle:hover {
+  color: var(--primary);
+}
+
+.ws-stageArrow {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .ws-stageUnits{
@@ -1333,7 +3431,7 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* 캐릭터: 세로로 길게 (머리→상의→하의→악세서리→프레임), 아이콘 작게 */
+/* Character: vertical layout (head → top → bottom → accessory → frame), small icons */
 .ws-storePreviewCharacter .ws-storePreviewTitle {
   margin-bottom: 8px;
 }
@@ -1569,6 +3667,14 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
+/* Practice View roadmap popup: 불투명 배경 (야간 모드) */
+.ws-storeModalPopup {
+  background: var(--panel);
+}
+html[data-theme="dark"] .ws-storeModalPopup {
+  background: #151d2e;
+}
+
 .ws-storeModalTitle {
   margin: 0 0 14px;
   font-size: 16px;
@@ -1717,8 +3823,146 @@ body {
    aligned to current ReportsView.tsx
 ============================= */
 
+.ws-reportsPage {
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ws-reportsPage > .ws-topbar {
+  padding-bottom: 16px;
+}
+
+.ws-reportSubRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.ws-reportList {
+  display: grid;
+  gap: 10px;
+  margin-top: 0;
+}
+
+/* Results header: outside card */
+.ws-reportResultsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ws-reportResultsHeader > div:first-child {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.ws-reportResultsHeader .ws-cardTitle {
+  margin: 0;
+}
+
+.ws-reportCount {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* Info block: 카드가 아닌 얇은 안내 스트립 */
+.ws-reportNoticeBlock {
+  padding: 12px 14px;
+  border-left: 4px solid color-mix(in srgb, var(--primary) 50%, transparent);
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ws-reportNoticeBlockTitle {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.ws-reportNoticeBlockText {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* Results count: text only, no round box */
+.ws-reportCount {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* 레벨(Promoted/No change/Demoted): 제목 앞머리와 맞춤, 작은 글자, 색만 */
+.ws-reportLevelText {
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ws-reportLevelText.promoted {
+  color: #16a34a;
+}
+
+.ws-reportLevelText.demoted {
+  color: var(--warn);
+}
+
+.ws-reportLevelText.same {
+  color: var(--muted);
+}
+
+.ws-reportLevelText.none {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
 .ws-reportFilters .ws-cardTitleRow {
   margin-bottom: 10px;
+}
+
+.ws-reportEmptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+
+.ws-reportFilterLabel {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--muted);
+  line-height: 1;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.ws-reportFilterCellWide,
+.ws-reportFilterRange,
+.ws-reportFilterSort {
+  display: grid;
+  gap: 6px;
+  align-items: start;
+}
+
+.ws-reportFilterRange .ws-radioRowTight,
+.ws-reportFilterCellWide .ws-radioRowTight,
+.ws-reportFilterSort .ws-radioRowTight {
+  margin-top: 0;
+}
+
+.ws-dateGridTight {
+  margin-top: 10px;
 }
 
 /* Layout row (ReportsView uses ws-reportFilterRow) */
@@ -1741,6 +3985,7 @@ body {
   display: grid;
   gap: 6px;
   min-width: 0;
+  align-items: start;
 }
 
 .ws-reportSelectLabel {
@@ -1853,14 +4098,31 @@ body {
 
 .ws-reportLeft {
   min-width: 0;
-  display: grid;
-  gap: 8px;
+}
+
+/* 리포트 카드 레이아웃: kindTag 세로 중앙(두 줄 중간), 레벨 텍스트 제목 앞머리와 맞춤 */
+.ws-reportTitleBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ws-kindTag--vertical {
+  flex-shrink: 0;
+}
+
+.ws-reportTitleGroup {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .ws-reportTitleRow {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -1887,6 +4149,11 @@ body {
   flex: 0 0 auto;
 }
 
+.ws-kindTag--vertical {
+  align-self: center;
+  margin-top: 0;
+}
+
 .ws-kindTag.is-quest {
   border-color: color-mix(in srgb, var(--primary) 35%, var(--line));
   background: color-mix(in srgb, var(--primary) 10%, var(--panel));
@@ -1902,12 +4169,20 @@ body {
 .ws-reportMeta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
   align-items: center;
-
+  gap: 6px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--muted);
+}
+
+.ws-reportMetaSep {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.ws-reportMetaDate {
+  font-weight: 400;
 }
 
 .ws-pillMini {
@@ -2028,7 +4303,7 @@ body {
    - drop-in replacement for Reports section
 ============================= */
 
-/* 전체 리포트 페이지에서 공통 타이포 톤 살짝 정리 */
+/* Shared typography tone for report pages */
 .ws-reportFilters,
 .ws-reportNotice,
 .ws-reportRow {
@@ -2058,7 +4333,7 @@ body {
   margin-bottom: 12px;
 }
 
-/* ReportsView가 실제로 쓰는 Row 클래스 */
+/* Row class used by ReportsView */
 .ws-reportFilterRow {
   display: grid;
   grid-template-columns: 170px 170px 1fr 1fr;
@@ -2076,6 +4351,13 @@ body {
   margin-top: 10px;
 }
 
+.ws-reportFilterStageUnit {
+  display: grid;
+  grid-template-columns: 160px 160px;
+  gap: 10px;
+  align-items: end;
+}
+
 .ws-reportFilterCell,
 .ws-reportFilterCellWide,
 .ws-reportFilterSort {
@@ -2085,8 +4367,9 @@ body {
 /* SelectField wrapper */
 .ws-reportSelectField {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
+  align-items: start;
 }
 
 .ws-reportSelectLabel,
@@ -2094,7 +4377,7 @@ body {
   font-weight: 900;
 }
 
-/* ---- 핵심: select / input을 로드맵 톤으로 스킨 ---- */
+/* ---- Core: skin select/input with roadmap tone ---- */
 .ws-select,
 .ws-dateInput {
   height: 40px;
@@ -2152,7 +4435,7 @@ body {
 }
 
 .ws-radioPill {
-  height: 36px;
+  height: 40px;
   padding: 0 12px;
 
   display: inline-flex;
@@ -2357,7 +4640,7 @@ body {
   color: var(--muted);
 }
 
-/* 레벨 뱃지 */
+/* Level badge */
 .ws-levelBadge {
   font-size: 11px;
   font-weight: 900;
@@ -2887,7 +5170,7 @@ body {
     align-items: flex-start;
   }
 
-  /* 라벨은 유지, 텍스트는 무조건 wrap */
+  /* Keep labels, force text wrap */
   .ws-rdQaLabel {
     letter-spacing: 0.02em;
   }

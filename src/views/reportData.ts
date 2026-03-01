@@ -128,7 +128,7 @@ export const demoReports: Report[] = [
     strengths: ["Good comprehension", "Key phrases remembered"],
     improvements: ["Past tense consistency", "Smoother greetings"],
     transcript: [
-      { q: "Translate: ‘화요일에 봐’", a: "See you on Tuesday.", ok: true },
+      { q: "Translate: 'See you on Tuesday'", a: "See you on Tuesday.", ok: true },
       { q: "Translate: ‘How are you yesterday?’ correction", a: "How were you yesterday?", ok: true },
     ],
   },
